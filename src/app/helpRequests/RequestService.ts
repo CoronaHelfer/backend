@@ -7,14 +7,14 @@ const config = Environment;
 class RequestService {
     public request: any;
 
-    public async find(q) {
+    public async find(q, helperId = null) {
         const requests = await Request.find(q);
 
         const responseList = [];
         for (const request of requests) {
             const createdBy = await UserService.findOne({_id: request.created_by});
 
-            responseList.push({
+            const element = {
                 _id: request._id,
                 distance: 999, // todo calc distance
                 title: request.title,
@@ -25,7 +25,14 @@ class RequestService {
                     lastName: createdBy.lastName.slice(0, 1) + '.',
                     picture: createdBy.picture ? createdBy.picture : '',
                 },
-            });
+            };
+
+            if (helperId) {
+                const offer = request.helper.find((x) => x.helperId.toString() === helperId);
+                // @ts-ignore
+                element.offer_text = offer.offer_text;
+            }
+            responseList.push(element);
         }
 
         return responseList;
