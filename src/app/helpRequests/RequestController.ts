@@ -15,9 +15,9 @@ class RequestController {
             lat: req.body.lat,
             lon: req.body.lon,
         };
-        const categories = req.body.categories;
+        const categoryQuery = req.body.categories ? {category: {$in: req.body.categories}} : {};
 
-        RequestService.find({})
+        RequestService.find(categoryQuery)
             .then((result) => res.status(200).send({result}))
             .catch((err) => res.status(500).send({error: err.message}));
     }
