@@ -36,13 +36,16 @@ class UserService {
   }
 
   public generateJwt() {
-    const secrect = config.JWT_TOKEN_SECRECT;
-    return jwt.sign(
-      {
-        _id: this.user._id,
-        email: this.user.email,
-        fullName: this.user.fullName,
-      }, secrect);
+    const secret = config.JWT_TOKEN_SECRET;
+    const expiresIn = config.JWT_EXPIRE_TIME;
+
+    const payload = {
+      _id: this.user._id,
+      email: this.user.email,
+      fullName: this.user.fullName,
+    };
+
+    return jwt.sign(payload, secret, {expiresIn});
   }
 }
 
