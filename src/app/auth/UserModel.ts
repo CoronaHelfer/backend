@@ -9,16 +9,16 @@ class User extends mongoose.Schema {
     constructor() {
         const UserSchema = {
             email: {
-                required: false,
-                trim: true,
                 type: String,
                 unique: true,
+                sparse : true,
+                trim: true,
                 validate: [isEmail, 'invalid email'],
             },
             phoneNumber: {
-                required: false,
-                trim: true,
                 type: String,
+                trim: true,
+                sparse : true,
                 unique: true,
             },
             firstName: {
