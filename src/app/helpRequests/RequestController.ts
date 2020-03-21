@@ -10,12 +10,14 @@ class RequestController {
         // Find Code would written here
     }
 
-    public update() {
+    public update(req, res) {
         // Update Code would written here
     }
 
-    public delete() {
-        // delete Code would written here
+    public offerHelp(req, res) {
+    }
+
+    public confirmHelp(req, res) {
     }
 }
 
