@@ -259,12 +259,9 @@
 			"Register": {
 				"type": "object",
 				"required": [
-					"userName",
 					"password",
 					"firstName",
-					"lastName",
-					"email",
-					"phoneNumber"
+					"lastName"
 				],
 				"properties": {
 					"firstName": {
@@ -274,10 +271,6 @@
 					"lastName": {
 						"type": "string",
 						"example": "nattarayan"
-					},
-					"userName": {
-						"type": "string",
-						"example": "arunnattarayan"
 					},
 					"password": {
 						"type": "string",
