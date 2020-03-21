@@ -36,8 +36,10 @@ class UserController {
         });
     }
 
-    public update() {
-        // Update Code would written here
+    public me(req, res) {
+        UserService.find({_id: req.decoded._id})
+            .then((result) => res.status(200).send({user: result}))
+            .catch((err) => res.status(500).send({error: err.message}));
     }
 
     public delete(req, res) {

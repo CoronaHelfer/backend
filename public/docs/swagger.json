@@ -172,6 +172,34 @@
         }
       }
     },
+    "/users/me": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "account details",
+        "operationId": "accountDetails",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "get token from login api.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria"
+          },
+          "403": {
+            "description": "UnAuthorized Access"
+          }
+        }
+      }
+    },
     "/request": {
       "get": {
         "tags": [

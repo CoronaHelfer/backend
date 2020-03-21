@@ -8,7 +8,12 @@ class UserService {
     public user: any;
 
     public async find(q) {
-        const result = await User.find(q);
+        const projection = {
+            __v: false,
+            verification: false,
+            passwordHash: false,
+        };
+        const result = await User.findOne(q, projection);
         return result;
     }
 
