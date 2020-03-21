@@ -1,11 +1,9 @@
 {
 	"openapi": "3.0.0",
-	"servers": [
-		{
-			"description": "local api",
-			"url": "http://localhost:3000/api/v1/"
-		}
-	],
+	"servers": [{
+		"description": "local api",
+		"url": "http://localhost:3000/api/v1/"
+	}],
 	"info": {
 		"description": "This is a simple API",
 		"version": "1.0.0",
@@ -18,8 +16,7 @@
 			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
 		}
 	},
-	"tags": [
-		{
+	"tags": [{
 			"name": "users"
 		},
 		{
@@ -27,6 +24,9 @@
 		},
 		{
 			"name": "register"
+		},
+		{
+			"name": "delete"
 		}
 	],
 	"paths": {
@@ -107,17 +107,15 @@
 				],
 				"summary": "searches users",
 				"operationId": "searchUser",
-				"parameters": [
-					{
-						"name": "x-access-token",
-						"in": "header",
-						"description": "get token from login api.",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
+				"parameters": [{
+					"name": "x-access-token",
+					"in": "header",
+					"description": "get token from login api.",
+					"required": true,
+					"schema": {
+						"type": "string"
 					}
-				],
+				}],
 				"responses": {
 					"200": {
 						"description": "search results matching criteria",
@@ -137,6 +135,31 @@
 					}
 				}
 			}
+		},
+		"/delete": {
+			"post": {
+				"tags": [
+					"delete"
+				],
+				"operationId": "AuthDelete",
+				"parameters": [{
+					"name": "x-access-token",
+					"in": "header",
+					"description": "get token from login api.",
+					"required": true,
+					"schema": {
+						"type": "string"
+					}
+				}],
+				"responses": {
+					"200": {
+						"description": "successfully deleted"
+					},
+					"403": {
+						"description": "UnAuthorized Access"
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -149,6 +172,7 @@
 					"lastName",
 					"userName",
 					"email",
+					"phoneNumber",
 					"created_at",
 					"updated_at"
 				],
@@ -174,6 +198,22 @@
 						"type": "string",
 						"format": "email",
 						"example": "arun@example.com"
+					},
+					"phoneNumber": {
+						"type": "string",
+						"example": "+49132623141"
+					},
+					"picture": {
+						"type": "string",
+						"example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAIAAABuYg/PAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAASdEVYdFNvZnR3YXJlAEdyZWVuc2hvdF5VCAUAAALJSURBVFhH7Zfda1JxGMf9Owa7GHTV21oFsd6pqy4KRl20i4gV3UQExVbMorZsUDBKaFgyw3VhEYk2dTV0ObUajmQOZKa2NpvzjDk33+Zc203f4Zinx7Pf0anQRfAB0d/zfD+ec34vKqmqrtl24+x2zc0d2lsVAuFQQCTBCxmrEBBJKnpNfCCSkI8qyn/ZPv2dBssTld/mjgYTK0tgLBZSeC3nrc8wRIo3oyDZib4OlW+QW4otri4TfqWiar/95IcO0iKIuOywsX04Mh7/nSaaDXCVKNivv0sa8xGR1emkPQEHSRekN+iq1bWSdoKI7OoX9cxSnOQKElqcv2BTkHYCS7ZH1/rSb0vl5QqSWsngHuzVS0kIH5bskKHNynlJKINBzosWEsKHJTtuejgSnSSJDEaiQbSQED7/jOygoe1TeIwkMkAxWkgIH5EJgrWcWs2QUEGSKxlsKOzZz5KBK59VXFpg48gnnF647Ogm7QQRGS5OOzmMb02iCShAGYpJO0FEBvAYTFNu7ElEsAGG3k442U8ri7gMHDG2qwN2Qd/8cqrLa6433CctghQky3LR/uJ90OWLc+PJ2YlkxBsL64OuM+ZOUsagCBnYqb2NPeJU/+PT5s4DvffwlhSwKU5WIiwZFs0xk+zcgFzu6e+bcgcSXGgxyn9gc8tJz8KUZdrzaNSALf+o8QGOJBLCR1iGnia78rl34NvcT8axyQdlzsgPbPyX7MrNlAIy/AjQjH/F+SS6vATB6n434azvFZiff8nq9NImhxIa0r8FENJo7UIgPz8nw4DMrZ9OL5C2LYMoBPJ9OVmLUzObSZCGEkHgtaGeDcW6DGuzLHcvH8zYBsvTnAzL82NolBSVEcfMdyjWZdeHXpX9BvJBOBRrsto3LQX+MiyFbp919+tmya7mRitXxNm/NaCAaO1vrkwhn41XZHZkQTgUVdU1fwCVE9YUxSK/9QAAAABJRU5ErkJggg=="
+					},
+					"verified": {
+						"type": "bool",
+						"example": "true"
+					},
+					"verificationCode":{
+						"type": "int",
+						"example": "321431"
 					},
 					"created_at": {
 						"type": "string",
@@ -219,11 +259,9 @@
 			"Register": {
 				"type": "object",
 				"required": [
-					"userName",
 					"password",
 					"firstName",
-					"lastName",
-					"email"
+					"lastName"
 				],
 				"properties": {
 					"firstName": {
@@ -234,10 +272,6 @@
 						"type": "string",
 						"example": "nattarayan"
 					},
-					"userName": {
-						"type": "string",
-						"example": "arunnattarayan"
-					},
 					"password": {
 						"type": "string",
 						"example": "arun"
@@ -246,6 +280,15 @@
 						"type": "string",
 						"format": "email",
 						"example": "arun@example.com"
+					},
+					"phoneNumber": {
+						"type": "string",
+						"example": "+49132454521132"
+					},
+					"picture": {
+						"type": "string",
+						"format": "base64",
+						"example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAIAAABuYg/PAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAASdEVYdFNvZnR3YXJlAEdyZWVuc2hvdF5VCAUAAALJSURBVFhH7Zfda1JxGMf9Owa7GHTV21oFsd6pqy4KRl20i4gV3UQExVbMorZsUDBKaFgyw3VhEYk2dTV0ObUajmQOZKa2NpvzjDk33+Zc203f4Zinx7Pf0anQRfAB0d/zfD+ec34vKqmqrtl24+x2zc0d2lsVAuFQQCTBCxmrEBBJKnpNfCCSkI8qyn/ZPv2dBssTld/mjgYTK0tgLBZSeC3nrc8wRIo3oyDZib4OlW+QW4otri4TfqWiar/95IcO0iKIuOywsX04Mh7/nSaaDXCVKNivv0sa8xGR1emkPQEHSRekN+iq1bWSdoKI7OoX9cxSnOQKElqcv2BTkHYCS7ZH1/rSb0vl5QqSWsngHuzVS0kIH5bskKHNynlJKINBzosWEsKHJTtuejgSnSSJDEaiQbSQED7/jOygoe1TeIwkMkAxWkgIH5EJgrWcWs2QUEGSKxlsKOzZz5KBK59VXFpg48gnnF647Ogm7QQRGS5OOzmMb02iCShAGYpJO0FEBvAYTFNu7ElEsAGG3k442U8ri7gMHDG2qwN2Qd/8cqrLa6433CctghQky3LR/uJ90OWLc+PJ2YlkxBsL64OuM+ZOUsagCBnYqb2NPeJU/+PT5s4DvffwlhSwKU5WIiwZFs0xk+zcgFzu6e+bcgcSXGgxyn9gc8tJz8KUZdrzaNSALf+o8QGOJBLCR1iGnia78rl34NvcT8axyQdlzsgPbPyX7MrNlAIy/AjQjH/F+SS6vATB6n434azvFZiff8nq9NImhxIa0r8FENJo7UIgPz8nw4DMrZ9OL5C2LYMoBPJ9OVmLUzObSZCGEkHgtaGeDcW6DGuzLHcvH8zYBsvTnAzL82NolBSVEcfMdyjWZdeHXpX9BvJBOBRrsto3LQX+MiyFbp919+tmya7mRitXxNm/NaCAaO1vrkwhn41XZHZkQTgUVdU1fwCVE9YUxSK/9QAAAABJRU5ErkJggg=="
 					}
 				}
 			}
