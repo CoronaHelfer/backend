@@ -5,7 +5,7 @@ const config = Environment;
 const dbConectionString = config.DB_URL;
 class DBConection {
   constructor() {
-    mongoose.connect(dbConectionString, { useNewUrlParser: true });
+    mongoose.connect(dbConectionString, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true  });
   }
 
   public errorHandler() {
