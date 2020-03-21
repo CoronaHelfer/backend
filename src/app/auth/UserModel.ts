@@ -1,7 +1,7 @@
 import bcryptjs from 'bcryptjs';
 import mongoose from 'mongoose';
-import {isEmail} from 'validator';
-import {UserMiddleware} from './UserMiddleware';
+import { isEmail } from 'validator';
+import { UserMiddleware } from './UserMiddleware';
 
 class User extends mongoose.Schema {
   public user: mongoose.Schema;
@@ -14,8 +14,24 @@ class User extends mongoose.Schema {
         unique: true,
         validate: [isEmail, 'invalid email'],
       },
-      firstName: { type: String, lowercase: true, trim: true },
-      lastName: { type: String, lowercase: true, trim: true },
+      phoneNumber: {
+        required: [true, 'required phone number'],
+        trim: true,
+        type: String,
+        unique: true,
+      },
+      firstName: {
+        required: [true, 'required first name'],
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      lastName: {
+        required: [true, 'required last name'],
+        type: String,
+        lowercase: true,
+        trim: true
+      },
       passwordHash: {
         required: [true, 'required password'],
         trim: true,
@@ -27,6 +43,15 @@ class User extends mongoose.Schema {
         type: String,
         unique: true,
       },
+      picture: {
+        type: String
+      },
+      verified: {
+        type: Boolean
+      },
+      verificationCode: {
+        type: Number
+      }
     };
     const user = super(UserSchema, {
       timestamps: {
