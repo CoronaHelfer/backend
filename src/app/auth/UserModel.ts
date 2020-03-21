@@ -1,7 +1,7 @@
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import mongoose from 'mongoose';
-import { isEmail } from 'validator';
-import { UserMiddleware } from './UserMiddleware';
+import {isEmail} from 'validator';
+import {UserMiddleware} from './UserMiddleware';
 
 class User extends mongoose.Schema {
   public user: mongoose.Schema;
@@ -37,15 +37,16 @@ class User extends mongoose.Schema {
     this.user = user;
     this.user.plugin(UserMiddleware);
     const validatePassword = (password, passwordHash) => {
-      return bcrypt.compareSync(password, passwordHash);
+      return bcryptjs.compareSync(password, passwordHash);
     };
     const createPasswordHash = (password) => {
       console.log(password);
-      return bcrypt.hashSync(password, 10);
+      return bcryptjs.hashSync(password, 10);
     };
     this.user.methods.validatePassword = validatePassword;
     this.user.methods.createPasswordHash = createPasswordHash;
     return this.user;
   }
 }
+
 export default mongoose.model('User', new User());

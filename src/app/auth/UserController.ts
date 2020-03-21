@@ -24,9 +24,9 @@ class UserController {
 
     public didExist(id: string): Promise<boolean> {
         return new Promise((res, rej) => {
-            UserService.find({_id: id})
+            UserService.findOne({_id: id})
                 .then((result) => {
-                    if (result.length > 0) {
+                    if (result) {
                         res(true);
                     } else {
                         res(false);
