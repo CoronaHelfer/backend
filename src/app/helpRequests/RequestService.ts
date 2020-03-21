@@ -23,8 +23,39 @@ class RequestService {
                 created_by: {
                     firstName: createdBy.firstName,
                     lastName: createdBy.lastName.slice(0, 1) + '.',
-                    picture: createdBy.picture,
+                    picture: createdBy.picture ? createdBy.picture : '',
                 },
+            });
+        }
+
+        return responseList;
+    }
+
+    public async getOwn(userId) {
+        const requests = await Request.find({created_by: userId});
+
+        const responseList = [];
+        for (const request of requests) {
+            const helperList = [];
+
+            for (const helper of request.helper) {
+                const helperObject = await UserService.findOne({_id: helper.helperId});
+                helperList.push({
+                    firstName: helperObject.firstName,
+                    lastName: helperObject.lastName.slice(0, 1) + '.',
+                    picture: helperObject.picture ? helperObject.picture : '',
+                    offer_text: helper.offer_text,
+                });
+            }
+
+            responseList.push({
+                address: requests.address,
+                _id: request._id,
+                title: request.title,
+                description: request.description,
+                category: request.category,
+                created_by: request.created_by,
+                helper: helperList,
             });
         }
 
@@ -61,7 +92,7 @@ class RequestService {
 
         request.helper.push(payload);
         request.save();
-        return request;
+        return {status: 'OK', message: 'Hilfe angeboten'};
     }
 
     public async confirmHelper(helperId: string, userId: string, requestId: string) {
@@ -77,7 +108,7 @@ class RequestService {
         }
         request.confirmed_helper = helperId;
         request.save();
-        return request;
+        return {status: 'OK', message: 'Helfer bestätigt'};
     }
 }
 
