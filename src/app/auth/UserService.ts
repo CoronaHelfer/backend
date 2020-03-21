@@ -23,6 +23,11 @@ class UserService {
     return this.generateJwt();
   }
 
+  public async delete() {
+    this.user.deleteOne();
+    return "successfully deleted"
+  }
+
   public async isValidUser(q) {
     const { userName, password } = q;
     const findQuery = { $or: [{ userName }, { email: userName }] };

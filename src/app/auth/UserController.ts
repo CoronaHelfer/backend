@@ -40,8 +40,10 @@ class UserController {
         // Update Code would written here
     }
 
-    public delete() {
-        // delete Code would written here
+    public delete(req, res) {
+        UserService.delete()
+            .then((result) => res.status(200).send({result: result}))
+            .catch((err) => res.status(500).send({error: err.message}));
     }
 }
 

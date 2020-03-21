@@ -24,6 +24,9 @@
 		},
 		{
 			"name": "register"
+		},
+		{
+			"name": "delete"
 		}
 	],
 	"paths": {
@@ -129,6 +132,31 @@
 					},
 					"403": {
 						"description": "invalid Access"
+					}
+				}
+			}
+		},
+		"/delete": {
+			"post": {
+				"tags": [
+					"delete"
+				],
+				"operationId": "AuthDelete",
+				"parameters": [{
+					"name": "x-access-token",
+					"in": "header",
+					"description": "get token from login api.",
+					"required": true,
+					"schema": {
+						"type": "string"
+					}
+				}],
+				"responses": {
+					"200": {
+						"description": "successfully deleted"
+					},
+					"403": {
+						"description": "UnAuthorized Access"
 					}
 				}
 			}
