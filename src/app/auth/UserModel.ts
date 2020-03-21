@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import { isEmail } from 'validator';
-import { UserMiddlerware } from './UserMiddlerware';
+import { UserMiddleware } from './UserMiddleware';
 
 class User extends mongoose.Schema {
   public user: mongoose.Schema;
@@ -35,7 +35,7 @@ class User extends mongoose.Schema {
       },
     });
     this.user = user;
-    this.user.plugin(UserMiddlerware);
+    this.user.plugin(UserMiddleware);
     const validatePassword = (password, passwordHash) => {
       return bcrypt.compareSync(password, passwordHash);
     };

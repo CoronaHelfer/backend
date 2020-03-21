@@ -1,4 +1,4 @@
-export function UserMiddlerware(schema, options): void {
+export function UserMiddleware(schema, options): void {
   // tslint:disable-next-line:only-arrow-functions
   schema.pre('validate', (next) => {
     console.log(this);
