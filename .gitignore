@@ -2,3 +2,5 @@
 /.idea/
 /.build/
 /public/logs/access.log
+.vscode
+package-lock.json

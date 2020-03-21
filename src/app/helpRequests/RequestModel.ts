@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import { isEmail } from 'validator';
 import { RequestMiddleware } from './RequestMiddleware';
