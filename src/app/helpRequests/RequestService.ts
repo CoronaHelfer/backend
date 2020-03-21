@@ -25,6 +25,19 @@ class RequestService {
         this.request = await request.save();
         return this.request;
     }
+
+    public async addHelper(body, userId: string) {
+        const request = await Request.findOne({_id: body.requestId});
+
+        const payload = {
+            helperId: userId,
+            offer_text: body.offerText,
+        };
+
+        request.helper.push(payload);
+
+        request.save();
+    }
 }
 
 export default new RequestService();

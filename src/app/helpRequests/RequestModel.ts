@@ -54,10 +54,6 @@ class Request extends mongoose.Schema {
                     required: true,
                 },
             },
-            time_start: {
-                type: Date,
-                required: true,
-            },
             time_end: {
                 type: Date,
                 required: false,

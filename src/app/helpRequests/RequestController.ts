@@ -11,7 +11,9 @@ class RequestController {
     }
 
     public find(req, res) {
-        // Find Code would written here
+        RequestService.find({})
+            .then((result) => res.status(200).send({result}))
+            .catch((err) => res.status(500).send({error: err.message}));
     }
 
     public update(req, res) {
@@ -19,6 +21,10 @@ class RequestController {
     }
 
     public offerHelp(req, res) {
+        const body = req.body;
+        RequestService.addHelper(body, req.decoded._id)
+            .then((result) => res.status(200).send({result}))
+            .catch((err) => res.status(500).send({error: err.message}));
     }
 
     public confirmHelp(req, res) {
