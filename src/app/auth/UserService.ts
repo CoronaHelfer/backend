@@ -38,8 +38,11 @@ class UserService {
     }
 
     public async isValidUser(q) {
-        const {userName, password} = q;
-        const findQuery = {$or: [{userName}, {email: userName}]};
+        const email = q.email;
+        const phoneNumber = q.phone;
+        const password = q.password;
+
+        const findQuery = {$or: [{phoneNumber}, {email}]};
         const user = await this.findOne(findQuery);
         if (user && user.validatePassword(password, user.passwordHash)) {
             this.user = user;

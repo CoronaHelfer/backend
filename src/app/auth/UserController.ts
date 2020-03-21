@@ -10,8 +10,7 @@ class UserController {
     }
 
     public register(req, res) {
-        const body = req.body;
-        UserService.create(body)
+        UserService.create(req.body)
             .then((result) => res.status(201).send({token: result}))
             .catch((err) => res.status(500).send({error: err.message}));
     }
