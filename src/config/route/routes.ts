@@ -2,7 +2,8 @@
 import AuthRoute from '../../app/auth/AuthRoute';
 import UserRoute from '../../app/auth/UserRoute';
 import CategoryRoute from '../../app/helpRequests/category/CategoryRoute';
-import RequestRoute from '../../app/helpRequests/RequestRoute';
+import RequestPrivateRoute from '../../app/helpRequests/RequestPrivateRoute';
+import RequestPublicRoute from '../../app/helpRequests/RequestPublicRoute';
 
 const Routes = [
     {
@@ -15,7 +16,12 @@ const Routes = [
         url: 'category',
     },
     {
-        route: RequestRoute,
+        route: RequestPrivateRoute,
+        url: 'request',
+    },
+    {
+        guard: false,
+        route: RequestPublicRoute,
         url: 'request',
     },
     {
