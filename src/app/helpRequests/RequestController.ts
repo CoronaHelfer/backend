@@ -28,6 +28,10 @@ class RequestController {
     }
 
     public confirmHelp(req, res) {
+        const body = req.body;
+        RequestService.confirmHelper(body.helperId, req.decoded._id, body.requestId)
+            .then((result) => res.status(200).send({result}))
+            .catch((err) => res.status(500).send({error: err.message}));
     }
 }
 

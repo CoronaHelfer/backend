@@ -58,6 +58,10 @@ class Request extends mongoose.Schema {
                 type: Date,
                 required: false,
             },
+            confirmed_helper: {
+                type: ObjectId,
+                ref: 'User',
+            },
             helper: [{
                 helperId: {
                     type: ObjectId,
