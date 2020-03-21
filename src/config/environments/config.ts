@@ -10,7 +10,7 @@ class Config {
     // this.configENV = process.env;
     this.PORT = '3000';
     this.API_ROOT_PATH = 'api';
-    this.DB_URL = 'mongodb://127.0.0.1:27017/corona-helper';
+    this.DB_URL = 'mongodb://corona-helper:wirvsvirus2020@134.255.225.148:27072/admin?authSource=admin&readPreference=primary';
     this.JWT_TOKEN_SECRET = '';
     this.JWT_EXPIRE_TIME = 86400; // 1 week
   }
