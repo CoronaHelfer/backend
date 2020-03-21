@@ -1,254 +1,672 @@
 {
-	"openapi": "3.0.0",
-	"servers": [
-		{
-			"description": "local api",
-			"url": "http://localhost:3000/api/v1/"
-		}
-	],
-	"info": {
-		"description": "This is a simple API",
-		"version": "1.0.0",
-		"title": "Simple Inventory API",
-		"contact": {
-			"email": "arunkumarit02@gmail.com"
-		},
-		"license": {
-			"name": "Apache 2.0",
-			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-		}
-	},
-	"tags": [
-		{
-			"name": "users"
-		},
-		{
-			"name": "login"
-		},
-		{
-			"name": "register"
-		}
-	],
-	"paths": {
-		"/auth/register": {
-			"post": {
-				"tags": [
-					"register"
-				],
-				"operationId": "AuthRegister",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/Register"
-							}
-						}
-					}
-				},
-				"responses": {
-					"201": {
-						"description": "access token to use access api",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"items": {
-										"$ref": "#/components/schemas/auth"
-									}
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "invalid parameters"
-					}
-				}
-			}
-		},
-		"/auth/login": {
-			"post": {
-				"tags": [
-					"login"
-				],
-				"operationId": "AuthLogin",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/Login"
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "access token to use access api",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"items": {
-										"$ref": "#/components/schemas/auth"
-									}
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "invalid login"
-					}
-				}
-			}
-		},
-		"/users": {
-			"get": {
-				"tags": [
-					"users"
-				],
-				"summary": "searches users",
-				"operationId": "searchUser",
-				"parameters": [
-					{
-						"name": "x-access-token",
-						"in": "header",
-						"description": "get token from login api.",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "search results matching criteria",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/userItem"
-									}
-								}
-							}
-						}
-					},
-					"403": {
-						"description": "invalid Access"
-					}
-				}
-			}
-		}
-	},
-	"components": {
-		"schemas": {
-			"userItem": {
-				"type": "object",
-				"required": [
-					"_id",
-					"firstName",
-					"lastName",
-					"userName",
-					"email",
-					"created_at",
-					"updated_at"
-				],
-				"properties": {
-					"_id": {
-						"type": "string",
-						"format": "uuid",
-						"example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
-					},
-					"firstName": {
-						"type": "string",
-						"example": "Arun"
-					},
-					"lastName": {
-						"type": "string",
-						"example": "nattarayan"
-					},
-					"userName": {
-						"type": "string",
-						"example": "arunnattarayan"
-					},
-					"email": {
-						"type": "string",
-						"format": "email",
-						"example": "arun@example.com"
-					},
-					"created_at": {
-						"type": "string",
-						"format": "date-time",
-						"example": "2016-08-29T09:12:33.001Z"
-					},
-					"updated_at": {
-						"type": "string",
-						"format": "date-time",
-						"example": "2016-08-29T09:12:33.001Z"
-					}
-				}
-			},
-			"auth": {
-				"type": "object",
-				"required": [
-					"token"
-				],
-				"properties": {
-					"token": {
-						"type": "string",
-						"example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFydW5AYWdpcmF0ZWNoLmNvbSIsIl9pZCI6IjVjZGNlY2YzODQ1NTYwMzQ4YzJlYzNkOSIsImlhdCI6MTU1ODcxMDYxNH0.ctiRGQUjCl7h3uRIZcIpPEFtWQ5TulwUBdm4MeYRmlA"
-					}
-				}
-			},
-			"Login": {
-				"type": "object",
-				"required": [
-					"userName",
-					"password"
-				],
-				"properties": {
-					"userName": {
-						"type": "string",
-						"example": "arunnattarayan"
-					},
-					"password": {
-						"type": "string",
-						"example": "arun"
-					}
-				}
-			},
-			"Register": {
-				"type": "object",
-				"required": [
-					"userName",
-					"password",
-					"firstName",
-					"lastName",
-					"email"
-				],
-				"properties": {
-					"firstName": {
-						"type": "string",
-						"example": "Arun"
-					},
-					"lastName": {
-						"type": "string",
-						"example": "nattarayan"
-					},
-					"userName": {
-						"type": "string",
-						"example": "arunnattarayan"
-					},
-					"password": {
-						"type": "string",
-						"example": "arun"
-					},
-					"email": {
-						"type": "string",
-						"format": "email",
-						"example": "arun@example.com"
-					}
-				}
-			}
-		}
-	}
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "local api",
+      "url": "http://localhost:3000/api/v1/"
+    }
+  ],
+  "info": {
+    "description": "This is a simple API",
+    "version": "1.0.0",
+    "title": "Simple Inventory API",
+    "contact": {
+      "email": "arunkumarit02@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "users"
+    },
+    {
+      "name": "login"
+    },
+    {
+      "name": "register"
+    },
+    {
+      "name": "request"
+    },
+    {
+      "name": "helper"
+    },
+    {
+      "name": "category"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "register"
+        ],
+        "operationId": "AuthRegister",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "access token to use access api",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/auth"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "invalid parameters"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "login"
+        ],
+        "operationId": "AuthLogin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "access token to use access api",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/auth"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "invalid login"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "searches users",
+        "operationId": "searchUser",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "get token from login api.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/userItem"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "invalid Access"
+          }
+        }
+      }
+    },
+    "/request": {
+      "get": {
+        "tags": [
+          "request"
+        ],
+        "summary": "searches requests",
+        "operationId": "searchRequests",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "get token from login api.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria"
+          },
+          "403": {
+            "description": "invalid Access"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "request"
+        ],
+        "summary": "create request",
+        "operationId": "createRequest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/creationRequest"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "get token from login api.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria"
+          },
+          "403": {
+            "description": "invalid Access"
+          }
+        }
+      }
+    },
+    "/request/helper": {
+      "post": {
+        "tags": [
+          "request",
+          "helper"
+        ],
+        "summary": "add helper",
+        "operationId": "addHelper",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/addHelperBody"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "get token from login api.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Request"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "invalid Access"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "request",
+          "helper"
+        ],
+        "summary": "confirm helper",
+        "operationId": "confirmHelper",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/confirmHelperBody"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "get token from login api.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Request"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "invalid Access"
+          }
+        }
+      }
+    },
+    "/category": {
+      "post": {
+        "tags": [
+          "category"
+        ],
+        "summary": "add helper",
+        "operationId": "createCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createCategoryBody"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "get token from login api.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "invalid Access"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "category"
+        ],
+        "summary": "confirm helper",
+        "operationId": "findCategory",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "get token from login api.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "invalid Access"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "userItem": {
+        "type": "object",
+        "required": [
+          "_id",
+          "firstName",
+          "lastName",
+          "userName",
+          "email",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Arun"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "nattarayan"
+          },
+          "userName": {
+            "type": "string",
+            "example": "arunnattarayan"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "arun@example.com"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2016-08-29T09:12:33.001Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2016-08-29T09:12:33.001Z"
+          }
+        }
+      },
+      "auth": {
+        "type": "object",
+        "required": [
+          "token"
+        ],
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFydW5AYWdpcmF0ZWNoLmNvbSIsIl9pZCI6IjVjZGNlY2YzODQ1NTYwMzQ4YzJlYzNkOSIsImlhdCI6MTU1ODcxMDYxNH0.ctiRGQUjCl7h3uRIZcIpPEFtWQ5TulwUBdm4MeYRmlA"
+          }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "required": [
+          "userName",
+          "password"
+        ],
+        "properties": {
+          "userName": {
+            "type": "string",
+            "example": "arunnattarayan"
+          },
+          "password": {
+            "type": "string",
+            "example": "arun"
+          }
+        }
+      },
+      "Register": {
+        "type": "object",
+        "required": [
+          "userName",
+          "password",
+          "firstName",
+          "lastName",
+          "email"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "Arun"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "nattarayan"
+          },
+          "userName": {
+            "type": "string",
+            "example": "arunnattarayan"
+          },
+          "password": {
+            "type": "string",
+            "example": "arun"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "arun@example.com"
+          }
+        }
+      },
+      "creationRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "description",
+          "category",
+          "address",
+          "time_end"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Kuchen für meinen Enkel"
+          },
+          "description": {
+            "type": "string",
+            "example": "Ich traue mich nicht das Haus zu verlassen. Mein Enkel soll aber seinen Kuchen bekommen. Kann ihn jemand vorbei bringen? Er wohnt auch nur 5 Minuten entfernt."
+          },
+          "category": {
+            "type": "string",
+            "example": "5e760820c8a4b63ee0c4cfba"
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "plz": {
+                "type": "string",
+                "example": "68199"
+              },
+              "city": {
+                "type": "string",
+                "example": "Mannheim"
+              },
+              "street": {
+                "type": "string",
+                "example": "Paul-Wittsack-Straße"
+              },
+              "street_nr": {
+                "type": "string",
+                "example": "2020-03-21T16:26:49.472Z"
+              }
+            }
+          }
+        }
+      },
+      "addHelperBody": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "example": "5e7617956079e433c064c7dd"
+          },
+          "offerText": {
+            "type": "string",
+            "example": "Hi, ich will helfen"
+          }
+        }
+      },
+      "confirmHelperBody": {
+        "type": "object",
+        "properties": {
+          "helperId": {
+            "type": "string",
+            "example": "5e7617956079e433c064c7dd"
+          },
+          "requestId": {
+            "type": "string",
+            "example": "5e7617ab6079e433c064c7de"
+          }
+        }
+      },
+      "createCategoryBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Kurierdienste"
+          },
+          "description": {
+            "type": "string",
+            "example": "kaum persönlicher Kontakt, niedriges Risiko"
+          }
+        }
+      },
+      "Category": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Request": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "position": {
+                "type": "object",
+                "properties": {
+                  "lat": {
+                    "type": "string"
+                  },
+                  "lon": {
+                    "type": "string"
+                  }
+                }
+              },
+              "plz": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "street": {
+                "type": "string"
+              },
+              "street_nr": {
+                "type": "string"
+              }
+            }
+          },
+          "time_end": {
+            "type": "string"
+          },
+          "helper": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "helperId": {
+                  "type": "string"
+                },
+                "offer_text": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "confirmed_helper": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
 }
