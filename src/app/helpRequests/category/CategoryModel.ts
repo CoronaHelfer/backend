@@ -9,6 +9,11 @@ class Category extends mongoose.Schema {
                 type: String,
                 required: true,
             },
+            internal_id: {
+                type: Number,
+                unique: true,
+                required: true,
+            },
             description: {
                 type: String,
                 required: false,
