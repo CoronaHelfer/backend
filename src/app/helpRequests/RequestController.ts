@@ -3,7 +3,11 @@ import RequestService from './RequestService';
 class RequestController {
 
     public create(req, res) {
-        // Create Code would written here
+        const body = req.body;
+
+        RequestService.create(body, req.decoded._id)
+            .then((result) => res.status(200).send({result}))
+            .catch((err) => res.status(500).send({error: err.message}));
     }
 
     public find(req, res) {

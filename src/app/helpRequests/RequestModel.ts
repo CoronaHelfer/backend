@@ -28,11 +28,11 @@ class Request extends mongoose.Schema {
             },
             address: {
                 position: {
-                    latitude: {
+                    lat: {
                         type: String,
                         required: true,
                     },
-                    longitude: {
+                    lon: {
                         type: String,
                         required: true,
                     },

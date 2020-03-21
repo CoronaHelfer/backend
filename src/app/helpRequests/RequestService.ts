@@ -14,8 +14,14 @@ class RequestService {
         return await Request.findOne(q);
     }
 
-    public async create(q) {
+    public async create(q, createdBy) {
         const request = new Request(q);
+
+        // todo get geolocation
+        request.address.position.lat = '123';
+        request.address.position.lon = '321';
+        request.created_by = createdBy;
+
         this.request = await request.save();
         return this.request;
     }
