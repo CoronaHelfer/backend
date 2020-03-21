@@ -7,11 +7,13 @@ class CategoryService {
     public category: any;
 
     public async find(q) {
-        return Category.find(q);
-    }
-
-    public async findOne(q) {
-        return await Category.findOne(q);
+        const projection = {
+            __v: false,
+            _id: false,
+            created_at: false,
+            updated_at: false,
+        };
+        return Category.find(q, projection);
     }
 
     public async create(q) {
