@@ -8,7 +8,7 @@ const Routes = [
     url: 'users',
   },
   {
-    gaurd: false,
+    guard: false,
     route: AuthRoute,
     url: 'auth',
   },

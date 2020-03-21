@@ -60,7 +60,7 @@ class ExpressMiddlerware {
   private router() {
     const router = express.Router();
     Routes.every((route) => {
-      router.use(Route.getUrl(route.url), this.validateToken(route.gaurd), route.route);
+      router.use(Route.getUrl(route.url), this.validateToken(route.guard), route.route);
       return true;
     });
     this.exApp.use(Route.fullPath(), router);
