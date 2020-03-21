@@ -4,8 +4,6 @@ services:
     container_name: frontend
     restart: always
     build: ../Coronahelfer-Hackathon-Frontend 
-    volumes:
-      - '../Coronahelfer-Hackathon-Frontend:/app'
     ports: 
       - "8080:80"
     depends_on:
