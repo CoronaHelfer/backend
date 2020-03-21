@@ -9,7 +9,6 @@ class CategoryService {
     public async find(q) {
         const projection = {
             __v: false,
-            _id: false,
             created_at: false,
             updated_at: false,
         };

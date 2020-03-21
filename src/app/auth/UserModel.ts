@@ -24,13 +24,11 @@ class User extends mongoose.Schema {
             firstName: {
                 required: [true, 'required first name'],
                 type: String,
-                lowercase: true,
                 trim: true,
             },
             lastName: {
                 required: [true, 'required last name'],
                 type: String,
-                lowercase: true,
                 trim: true,
             },
             passwordHash: {

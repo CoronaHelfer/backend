@@ -1,4 +1,5 @@
 import Environment from '../../config/environments';
+import UserService from '../auth/UserService';
 import Request from './RequestModel';
 
 const config = Environment;
@@ -7,11 +8,27 @@ class RequestService {
     public request: any;
 
     public async find(q) {
-        return Request.find(q);
-    }
+        const requests = await Request.find(q);
 
-    public async findOne(q) {
-        return await Request.findOne(q);
+        const responseList = [];
+        for (const request of requests) {
+            const createdBy = await UserService.findOne({_id: request.created_by});
+
+            responseList.push({
+                _id: request._id,
+                distance: 999, // todo calc distance
+                title: request.title,
+                description: request.description,
+                category: request.category,
+                created_by: {
+                    firstName: createdBy.firstName,
+                    lastName: createdBy.lastName.slice(0, 1) + '.',
+                    picture: createdBy.picture,
+                },
+            });
+        }
+
+        return responseList;
     }
 
     public async create(q, createdBy) {
