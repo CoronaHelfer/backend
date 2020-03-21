@@ -11,13 +11,15 @@ class RequestController {
     }
 
     public find(req, res) {
+        const position = {
+            lat: req.body.lat,
+            lon: req.body.lon,
+        };
+        const categories = req.body.categories;
+
         RequestService.find({})
             .then((result) => res.status(200).send({result}))
             .catch((err) => res.status(500).send({error: err.message}));
-    }
-
-    public update(req, res) {
-        // Update Code would written here
     }
 
     public offerHelp(req, res) {

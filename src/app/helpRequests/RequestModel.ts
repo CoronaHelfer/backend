@@ -30,11 +30,11 @@ class Request extends mongoose.Schema {
                 position: {
                     lat: {
                         type: String,
-                        required: true,
+                        required: false,
                     },
                     lon: {
                         type: String,
-                        required: true,
+                        required: false,
                     },
                 },
                 plz: {
@@ -47,11 +47,11 @@ class Request extends mongoose.Schema {
                 },
                 street: {
                     type: String,
-                    required: true,
+                    required: false,
                 },
                 street_nr: {
                     type: String,
-                    required: true,
+                    required: false,
                 },
             },
             time_end: {
