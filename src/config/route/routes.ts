@@ -1,4 +1,3 @@
-
 import AuthRoute from '../../app/auth/AuthRoute';
 import UserRoute from '../../app/auth/UserRoute';
 import CategoryRoute from '../../app/helpRequests/category/CategoryRoute';
@@ -7,22 +6,24 @@ import RequestPublicRoute from '../../app/helpRequests/RequestPublicRoute';
 
 const Routes = [
     {
+        guard: true,
         route: UserRoute,
         url: 'users',
     },
     {
-        guard: false,
-        route: CategoryRoute,
-        url: 'category',
-    },
-    {
+        guard: true,
         route: RequestPrivateRoute,
         url: 'request',
     },
     {
         guard: false,
         route: RequestPublicRoute,
-        url: 'request',
+        url: 'publicRequest',
+    },
+    {
+        guard: false,
+        route: CategoryRoute,
+        url: 'category',
     },
     {
         guard: false,
