@@ -3,19 +3,37 @@ import RequestService from './RequestService';
 class RequestController {
 
     public create(req, res) {
-        // Create Code would written here
+        const body = req.body;
+
+        RequestService.create(body, req.decoded._id)
+            .then((result) => res.status(200).send({result}))
+            .catch((err) => res.status(500).send({error: err.message}));
     }
 
     public find(req, res) {
-        // Find Code would written here
+        const position = {
+            lat: req.body.lat,
+            lon: req.body.lon,
+        };
+        const categories = req.body.categories;
+
+        RequestService.find({})
+            .then((result) => res.status(200).send({result}))
+            .catch((err) => res.status(500).send({error: err.message}));
     }
 
-    public update() {
-        // Update Code would written here
+    public offerHelp(req, res) {
+        const body = req.body;
+        RequestService.addHelper(body, req.decoded._id)
+            .then((result) => res.status(200).send({result}))
+            .catch((err) => res.status(500).send({error: err.message}));
     }
 
-    public delete() {
-        // delete Code would written here
+    public confirmHelp(req, res) {
+        const body = req.body;
+        RequestService.confirmHelper(body.helperId, req.decoded._id, body.requestId)
+            .then((result) => res.status(200).send({result}))
+            .catch((err) => res.status(500).send({error: err.message}));
     }
 }
 
