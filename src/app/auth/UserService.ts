@@ -7,19 +7,13 @@ const config = Environment;
 class UserService {
     public user: any;
 
-    public async find(q) {
+    public async findOne(q) {
         const projection = {
             __v: false,
             verification: false,
             passwordHash: false,
         };
-        const result = await User.findOne(q, projection);
-        return result;
-    }
-
-    public async findOne(q) {
-        const result = await User.findOne(q);
-        return result;
+        return await User.findOne(q, projection);
     }
 
     public async create(q) {
