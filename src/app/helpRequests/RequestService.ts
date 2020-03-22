@@ -22,10 +22,12 @@ class RequestService {
                 description: request.description,
                 category: await CategoryService.findOne({_id: request.category.toString()}),
                 created_by: {
+                    _id: createdBy._id,
                     firstName: createdBy.firstName,
                     lastName: createdBy.lastName.slice(0, 1) + '.',
                     picture: createdBy.picture ? createdBy.picture : '',
                 },
+                confirmed_helper: request.confirmed_helper,
                 created_at: request.created_at,
                 time_end: request.time_end,
             };
@@ -51,12 +53,15 @@ class RequestService {
             for (const helper of request.helper) {
                 const helperObject = await UserService.findOne({_id: helper.helperId});
                 helperList.push({
+                    _id: helperObject._id,
                     firstName: helperObject.firstName,
                     lastName: helperObject.lastName.slice(0, 1) + '.',
                     picture: helperObject.picture ? helperObject.picture : '',
                     offer_text: helper.offer_text,
                 });
             }
+
+            const confirmedHelperObject = await UserService.findOne({_id: request.confirmed_helper});
 
             responseList.push({
                 address: requests.address,
@@ -66,6 +71,13 @@ class RequestService {
                 category: await CategoryService.findOne({_id: request.category.toString()}),
                 created_by: request.created_by,
                 helper: helperList,
+                confirmed_helper: {
+                    _id: confirmedHelperObject._id,
+                    firstName: confirmedHelperObject.firstName,
+                    lastName: confirmedHelperObject.lastName.slice(0, 1) + '.',
+                    picture: confirmedHelperObject.picture ? confirmedHelperObject.picture : '',
+                    offer_text: confirmedHelperObject.offer_text,
+                },
                 created_at: request.created_at,
                 time_end: request.time_end,
             });
