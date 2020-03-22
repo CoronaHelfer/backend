@@ -37,7 +37,7 @@ class UserService {
         const password = q.password;
 
         const findQuery = {$or: [{phoneNumber}, {email}]};
-        const user = await this.findOne(findQuery);
+        const user = await User.findOne(findQuery);
         if (user && user.validatePassword(password, user.passwordHash)) {
             this.user = user;
             return this.generateJwt();
