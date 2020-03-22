@@ -94,12 +94,13 @@ class RequestService {
             (request.address.position.lat && request.address.position.lon))) {
             throw new Error('Address or Geolocation required');
         }
+        if (!(request.address.position.lat && request.address.position.lon)) {
+            const geo = await GeocodingService.addressToCoordinate(request.address.plz, request.address.street,
+                request.address.city, request.address.street_nr);
 
-        const geo = await GeocodingService.addressToCoordinate(request.address.plz, request.address.street,
-            request.address.city, request.address.street_nr);
-
-        request.address.position.lat = geo.lat;
-        request.address.position.lon = geo.lon;
+            request.address.position.lat = geo.lat;
+            request.address.position.lon = geo.lon;
+        }
         request.created_by = createdBy;
 
         this.request = await request.save();
