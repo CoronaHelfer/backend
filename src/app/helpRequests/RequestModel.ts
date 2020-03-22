@@ -27,23 +27,26 @@ class Request extends mongoose.Schema {
                 required: true,
             },
             address: {
-                position: {
-                    lat: {
+                location: {
+                    type: {
                         type: String,
-                        required: false,
+                        enum: ['Point'],
+                        default: 'Point',
+                        required: true,
                     },
-                    lon: {
-                        type: String,
-                        required: false,
+                    coordinates: {
+                        type: [Number],
+                        default: [0, 0],
+                        required: true,
                     },
                 },
                 plz: {
                     type: String,
-                    required: true,
+                    required: false,
                 },
                 city: {
                     type: String,
-                    required: true,
+                    required: false,
                 },
                 street: {
                     type: String,
@@ -79,6 +82,7 @@ class Request extends mongoose.Schema {
             },
         });
         this.request = request;
+        this.request.index({'address.location': '2dsphere'});
         this.request.plugin(RequestMiddleware);
 
         return this.request;

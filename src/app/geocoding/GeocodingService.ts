@@ -6,17 +6,17 @@ const client = new Client({});
 class GeocodingService {
 
     public static async addressToCoordinate(plz: number, street: string, city: string, streetNr: string)
-        : Promise<{ lat: number, lon: number }> {
+        : Promise<number[]> {
         const geocode = await client.geocode({
             params: {
                 address: street + streetNr + plz + city,
                 key: Environment.googleApiKey,
             },
         });
-        return {
-            lat: geocode.data.results[0].geometry.location.lat,
-            lon: geocode.data.results[0].geometry.location.lng,
-        };
+        if (!geocode.data.results.length) {
+            throw new Error('Google API fail');
+        }
+        return [geocode.data.results[0].geometry.location.lng, geocode.data.results[0].geometry.location.lat];
     }
 
     public static distanceBetweenTwoCoordinates(lat1, lon1, lat2, lon2): number {
@@ -29,13 +29,13 @@ class GeocodingService {
         const c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
         const d = quatorialEarthRadius * c;
 
-        return d; // in km
+        return d * 1000; // in km
     }
 }
 
-export default new GeocodingService();
+export default GeocodingService;
 
 // example
-GeocodingService.addressToCoordinate(27404, 'Stader Str.', 'Heeslingen', '3').then((result) => {
-    console.log(result);
-});
+// GeocodingService.addressToCoordinate(68199, null, null, null).then((result) => {
+//     console.log(result);
+// });
