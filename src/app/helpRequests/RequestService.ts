@@ -9,7 +9,7 @@ const config = Environment;
 class RequestService {
     public request: any;
 
-    public async find(q, helperId = null) {
+    public async find(q, helperId = null, ownPosition: number[] = null) {
         const requests = await Request.find(q);
 
         const responseList = [];
@@ -18,7 +18,7 @@ class RequestService {
 
             const element = {
                 _id: request._id,
-                distance: 999, // todo calc distance
+                distance: ownPosition ? GeocodingService.distanceBetweenTwoCoordinates(request.address.location.coordinates[0], request.address.location.coordinates[1], ownPosition[0], ownPosition[1]) : 0,
                 title: request.title,
                 description: request.description,
                 category: await CategoryService.findOne({_id: request.category.toString()}),

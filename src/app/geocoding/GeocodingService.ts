@@ -29,7 +29,7 @@ class GeocodingService {
         const c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
         const d = quatorialEarthRadius * c;
 
-        return d; // in km
+        return d * 1000; // in km
     }
 }
 

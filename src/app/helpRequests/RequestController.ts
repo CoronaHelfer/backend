@@ -55,7 +55,7 @@ class RequestController {
             },
         });
 
-        RequestService.find({$and: query})
+        RequestService.find({$and: query}, null, ownPosition)
             .then((result) => res.status(200).send({result}))
             .catch((err) => res.status(500).send({error: err.message}));
     }
