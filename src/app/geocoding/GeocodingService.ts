@@ -4,28 +4,25 @@ import { Client } from "@googlemaps/google-maps-services-js";
 const client = new Client({});
 
 class GeocodingService {
-    public static addressToCoordinate(plz: number, street: string, city: string, streetNr: string)
-        : { lat: number, lon: number } {
-        client.geocode({
-            params: {
-                address: street + streetNr + plz + city,
-                key: Environment.googleApiKey
-            },
-            timeout: 1000 // milliseconds
-        })
-            .then(r => {
-                return { //not working
-                    lat: r.data.results[0].geometry.location.lat,
-                    lon: r.data.results[0].geometry.location.lng,
-                };
+    public static addressToCoordinate(plz: number, street: string, city: string, streetNr: string) {
+        return new Promise<number[]>(async result => {
+            await client.geocode({
+                params: {
+                    address: street + streetNr + plz + city,
+                    key: Environment.googleApiKey
+                },
+                timeout: 1000 // milliseconds
             })
-            .catch(e => {
-                console.log(e);
-            });
-        return { //not working
-            lat: 0,
-            lon: 0
-        }
+                .then(r => {
+                    result([
+                        r.data.results[0].geometry.location.lat,
+                        r.data.results[0].geometry.location.lng,
+                    ]);
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+        })
     }
 
     public static distanceBetweenTwoCoordinates(lat1, lon1, lat2, lon2): number {
@@ -43,5 +40,7 @@ class GeocodingService {
 
 export default new GeocodingService();
 
-//test
-//console.log(GeocodingService.addressToCoordinate(27404, "Stader Str.", "Heeslingen", "3"))
+//example
+// GeocodingService.addressToCoordinate(27404, "Stader Str.", "Heeslingen", "3").then(function(result){
+//     console.log(result)
+// })
