@@ -90,16 +90,13 @@ class RequestService {
     public async create(q, createdBy) {
         const request = new Request(q);
 
-        if (!((request.address.plz && request.address.city && request.address.street && request.address.street_nr) ||
-            (request.address.position.lat && request.address.position.lon))) {
+        if (!((request.address && (request.address.plz && request.address.city && request.address.street && request.address.street_nr)) ||
+            (request.address.position && (request.address.position.lat && request.address.position.lon)))) {
             throw new Error('Address or Geolocation required');
         }
-        if (!(request.address.position.lat && request.address.position.lon)) {
-            const geo = await GeocodingService.addressToCoordinate(request.address.plz, request.address.street,
-                request.address.city, request.address.street_nr);
-
-            request.address.position.lat = geo.lat;
-            request.address.position.lon = geo.lon;
+        if (!(request.address.position && (request.address.position.lat && request.address.position.lon))) {
+            request.address.location.coordinates = await GeocodingService.addressToCoordinate
+            (request.address.plz, request.address.street, request.address.city, request.address.street_nr);
         }
         request.created_by = createdBy;
 
