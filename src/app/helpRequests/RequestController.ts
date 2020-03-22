@@ -1,4 +1,9 @@
+import GeocodingService from '../geocoding/GeocodingService';
 import RequestService from './RequestService';
+
+import Environment from '../../config/environments';
+
+const config = Environment;
 
 class RequestController {
 
@@ -10,14 +15,47 @@ class RequestController {
             .catch((err) => res.status(500).send({error: err.message}));
     }
 
-    public find(req, res) {
-        const position = {
-            lat: req.body.lat,
-            lon: req.body.lon,
+    public async find(req, res) {
+        let ownPosition = [];
+        const address = {
+            plz: req.body['address.plz'],
+            city: req.body['address.city'],
+            street: req.body['address.street'],
+            street_nr: req.body['address.street_nr'],
         };
-        const categoryQuery = req.body.category ? {category: {$in: req.body.category}} : {};
+        const position = req.body.position;
+        if (address.plz || (position && position[0] && position[1])) {
+            if (position && position[0] && position[1]) {
+                ownPosition = position;
+            } else {
+                ownPosition = await GeocodingService.addressToCoordinate(address.plz, address.street,
+                    address.city, address.street_nr);
+            }
+        }
+        if (!ownPosition.length) {
+            res.status(500).send({error: 'no position'});
+            return;
+        }
 
-        RequestService.find(categoryQuery)
+        const query = [];
+        if (req.body.category) {
+            query.push({category: {$in: req.body.category}});
+        }
+
+        query.push({
+            'address.location': {
+                $near: {
+                    $geometry: {
+                        type: 'Point',
+                        coordinates: ownPosition,
+                    },
+                    $maxDistance: config.REQUEST_MAX_DISTANCE,
+                    $minDistance: 0,
+                },
+            },
+        });
+
+        RequestService.find({$and: query})
             .then((result) => res.status(200).send({result}))
             .catch((err) => res.status(500).send({error: err.message}));
     }
