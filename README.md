@@ -17,4 +17,4 @@
 Your local repository folders will be mounted into the running docker container on `/app` 
 
 ## local testing
-the webserver will be served at `localhost:8080` the backend is available at `localhost:8081`
+the webserver will be served at `localhost:80` the backend is available at `localhost:3000`
