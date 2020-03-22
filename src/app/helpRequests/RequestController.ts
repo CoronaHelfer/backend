@@ -15,9 +15,15 @@ class RequestController {
             lat: req.body.lat,
             lon: req.body.lon,
         };
-        const categoryQuery = req.body.categories ? {category: {$in: req.body.categories}} : {};
 
-        RequestService.find(categoryQuery)
+        const categoryQuery = [];
+        if (req.body.categories) {
+            req.body.categories.forEach((x) => {
+                categoryQuery.push(x.length < 5 ? {internal_id: x} : {_id: x});
+            });
+        }
+
+        RequestService.find({$or: categoryQuery})
             .then((result) => res.status(200).send({result}))
             .catch((err) => res.status(500).send({error: err.message}));
     }
