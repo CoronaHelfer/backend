@@ -1,7 +1,8 @@
 import Express from 'express';
-import DBConection from './config/db/connection';
+import DBConnection from './config/db/connection';
+import initCategories from './config/db/initCategories';
 import Environment from './config/environments';
-import ExpressMiddlerware from './config/express-middleware';
+import ExpressMiddleware from './config/express-middleware';
 
 /**
  * The server.
@@ -21,7 +22,7 @@ class Server {
     this.app = Express();
     this.dbConfig();
     this.config = Environment;
-    ExpressMiddlerware.init(this.app, this.config);
+    ExpressMiddleware.init(this.app, this.config);
     this.main();
   }
 
@@ -32,8 +33,9 @@ class Server {
   }
 
   private dbConfig() {
-    const db = new DBConection();
+    const db = new DBConnection();
     db.errorHandler();
+    initCategories.start();
   }
 }
 

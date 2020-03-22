@@ -10,17 +10,16 @@ class UserController {
     }
 
     public register(req, res) {
-        const body = req.body;
-        UserService.create(body)
+        UserService.create(req.body)
             .then((result) => res.status(201).send({token: result}))
             .catch((err) => res.status(500).send({error: err.message}));
     }
 
-    public search(req, res) {
-        UserService.find({})
-            .then((result) => res.status(200).send({users: result}))
-            .catch((err) => res.status(500).send({error: err.message}));
-    }
+    // public search(req, res) {
+    //     UserService.findOne({})
+    //         .then((result) => res.status(200).send({users: result}))
+    //         .catch((err) => res.status(500).send({error: err.message}));
+    // }
 
     public didExist(id: string): Promise<boolean> {
         return new Promise((res, rej) => {
@@ -36,8 +35,10 @@ class UserController {
         });
     }
 
-    public update() {
-        // Update Code would written here
+    public me(req, res) {
+        UserService.findOne({_id: req.decoded._id})
+            .then((result) => res.status(200).send({user: result}))
+            .catch((err) => res.status(500).send({error: err.message}));
     }
 
     public delete(req, res) {

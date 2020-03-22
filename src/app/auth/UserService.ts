@@ -7,14 +7,13 @@ const config = Environment;
 class UserService {
     public user: any;
 
-    public async find(q) {
-        const result = await User.find(q);
-        return result;
-    }
-
     public async findOne(q) {
-        const result = await User.findOne(q);
-        return result;
+        const projection = {
+            __v: false,
+            verification: false,
+            passwordHash: false,
+        };
+        return await User.findOne(q, projection);
     }
 
     public async create(q) {
@@ -33,8 +32,11 @@ class UserService {
     }
 
     public async isValidUser(q) {
-        const {userName, password} = q;
-        const findQuery = {$or: [{userName}, {email: userName}]};
+        const email = q.email;
+        const phoneNumber = q.phone;
+        const password = q.password;
+
+        const findQuery = {$or: [{phoneNumber}, {email}]};
         const user = await this.findOne(findQuery);
         if (user && user.validatePassword(password, user.passwordHash)) {
             this.user = user;

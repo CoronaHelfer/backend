@@ -1,4 +1,6 @@
 import Environment from '../../config/environments';
+import UserService from '../auth/UserService';
+import CategoryService from './category/CategoryService';
 import Request from './RequestModel';
 
 const config = Environment;
@@ -6,12 +8,66 @@ const config = Environment;
 class RequestService {
     public request: any;
 
-    public async find(q) {
-        return Request.find(q);
+    public async find(q, helperId = null) {
+        const requests = await Request.find(q);
+
+        const responseList = [];
+        for (const request of requests) {
+            const createdBy = await UserService.findOne({_id: request.created_by});
+
+            const element = {
+                _id: request._id,
+                distance: 999, // todo calc distance
+                title: request.title,
+                description: request.description,
+                category: await CategoryService.findOne({_id: request.category.toString()}),
+                created_by: {
+                    firstName: createdBy.firstName,
+                    lastName: createdBy.lastName.slice(0, 1) + '.',
+                    picture: createdBy.picture ? createdBy.picture : '',
+                },
+            };
+
+            if (helperId) {
+                const offer = request.helper.find((x) => x.helperId.toString() === helperId);
+                // @ts-ignore
+                element.offer_text = offer.offer_text;
+            }
+            responseList.push(element);
+        }
+
+        return responseList;
     }
 
-    public async findOne(q) {
-        return await Request.findOne(q);
+    public async getOwn(userId) {
+        const requests = await Request.find({created_by: userId});
+
+        const responseList = [];
+        for (const request of requests) {
+            const helperList = [];
+
+            for (const helper of request.helper) {
+                const helperObject = await UserService.findOne({_id: helper.helperId});
+                helperList.push({
+                    firstName: helperObject.firstName,
+                    lastName: helperObject.lastName.slice(0, 1) + '.',
+                    picture: helperObject.picture ? helperObject.picture : '',
+                    offer_text: helper.offer_text,
+                });
+            }
+
+            responseList.push({
+                address: requests.address,
+                _id: request._id,
+                title: request.title,
+                description: request.description,
+                category: await CategoryService.findOne({_id: request.category.toString()}),
+                created_by: request.created_by,
+                helper: helperList,
+            });
+        }
+
+        return responseList;
     }
 
     public async create(q, createdBy) {
@@ -44,7 +100,7 @@ class RequestService {
 
         request.helper.push(payload);
         request.save();
-        return request;
+        return {status: 'OK', message: 'Hilfe angeboten'};
     }
 
     public async confirmHelper(helperId: string, userId: string, requestId: string) {
@@ -60,7 +116,7 @@ class RequestService {
         }
         request.confirmed_helper = helperId;
         request.save();
-        return request;
+        return {status: 'OK', message: 'Helfer bestätigt'};
     }
 }
 
