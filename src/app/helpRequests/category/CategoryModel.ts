@@ -8,6 +8,7 @@ class Category extends mongoose.Schema {
             name: {
                 type: String,
                 required: true,
+                unique: true,
             },
             internal_id: {
                 type: Number,
