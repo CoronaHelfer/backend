@@ -26,6 +26,8 @@ class RequestService {
                     lastName: createdBy.lastName.slice(0, 1) + '.',
                     picture: createdBy.picture ? createdBy.picture : '',
                 },
+                created_at: request.created_at,
+                time_end: request.time_end,
             };
 
             if (helperId) {
@@ -64,6 +66,8 @@ class RequestService {
                 category: await CategoryService.findOne({_id: request.category.toString()}),
                 created_by: request.created_by,
                 helper: helperList,
+                created_at: request.created_at,
+                time_end: request.time_end,
             });
         }
 
