@@ -3,6 +3,10 @@ import mongoose from 'mongoose';
 import {isEmail} from 'validator';
 import {UserMiddleware} from './UserMiddleware';
 
+import Environment from '../../config/environments';
+
+const config = Environment;
+
 class User extends mongoose.Schema {
     public user: mongoose.Schema;
 
@@ -11,14 +15,14 @@ class User extends mongoose.Schema {
             email: {
                 type: String,
                 unique: true,
-                sparse : true,
+                sparse: true,
                 trim: true,
                 validate: [isEmail, 'invalid email'],
             },
             phoneNumber: {
                 type: String,
                 trim: true,
-                sparse : true,
+                sparse: true,
                 unique: true,
             },
             firstName: {
@@ -38,6 +42,9 @@ class User extends mongoose.Schema {
             },
             picture: {
                 type: String,
+                default: () => {
+                    return config.DEFAULT_PROFILE_PICTURES[Math.floor(Math.random() * 4)];
+                },
             },
             verification: {
                 verified: {
