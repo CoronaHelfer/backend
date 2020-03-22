@@ -18,17 +18,37 @@ interface IResponse {
     message: string;
 }
 
-interface IParams {
+interface IParamsHelper {
     user: {
         email?: string;
-        phoneNumber?: string;
-        firstName?: string;
+        phoneNumber: string;
+        firstName: string;
         lastName: string;
         userName?: string;
         picture?: string;
         verified?: boolean;
     }
-    request?: {
+    category?: {
+        name: string;
+        description: string
+    }
+    offer:{
+        title: string;
+        description: string;
+    }
+}
+
+interface IParamsSeeker {
+    user: {
+        email?: string;
+        phoneNumber: string;
+        firstName: string;
+        lastName: string;
+        userName?: string;
+        picture?: string;
+        verified?: boolean;
+    }
+    request: {
         title: string;
         description: string;
     }
@@ -36,69 +56,37 @@ interface IParams {
         name: string;
         description: string
     }
-    offer?:{
+}
+
+interface IParams {
+    type: string,
+    user: {
+        email?: string;
+        phoneNumber: string;
+        firstName: string;
+        lastName: string;
+        userName?: string;
+        picture?: string;
+        verified?: boolean;
+    }
+    objective: {
         title: string;
         description: string;
+    }
+    category?: {
+        name: string;
+        description: string
     }
 }
 
 const FlyerGenerator = {
-    helper_big: async (params:IParams):Promise<IResponse> => {
-        const { user, request, category, offer } = params;
-        const hash = createFileName();
+    helper_big: async (params:IParamsHelper):Promise<IResponse> => {
+        const { user, category, offer } = params;
 
-        try {
-            const filePath = path.resolve(hash + '.pdf');
-
-            // Create a document
-            let doc = new PDFDocument({size: 'A4'});
-
-            // fill the pdf here!
-
-            // Head
-            doc.lineCap('butt')
-                .strokeColor('#1C1C1C')
-                .lineWidth(100)
-                .moveTo(margin/2, margin/2+50)
-                .lineTo(Dina4.width-margin/2,margin/2+50)
-                .stroke()
-            doc.image('./public/ressources/images/logo_light.png', margin, margin/2+10, {width: 180})
-
-            // User picture (if)
-
-            if ("picture" in user) {
-                doc.image(user.picture, Dina4.width/2-50, 180, {fit: [100,100]})
-            }
-
-            doc.fontSize(12)
-            doc.font('./public/ressources/fonts/Open_Sans/OpenSans-Regular.ttf')
-                .text(user.firstName+" "+user.lastName, margin, 200, {width: Dina4.width-(2*margin), align: 'right'})
-                .moveDown(0.25)
-                .text("Telefonnr.: "+user.phoneNumber, {width: Dina4.width-(2*margin), align: 'right'})
-
-            doc.moveDown(3);
-
-            doc.font('./public/ressources/fonts/Open_Sans/OpenSans-Bold.ttf')
-                .text(offer?.title, {align: 'justify'});
-
-            doc.moveDown(1);
-
-
-            doc.font('./public/ressources/fonts/Open_Sans/OpenSans-Regular.ttf')
-                .text(offer?.description);
-
-            doc.image('./public/ressources/images/qr_light.png', Dina4.width-margin-75, Dina4.height-margin-margin/2, {width: 100, align: 'right'})
-            // doc.text("CoronaHelfer.eu", 0, Dina4.height-margin, {width: Dina4.width-(2*margin), align: 'right'})
-
-            const result = await buildStream(doc, filePath);
-            return { error: false, data: result, message: 'success!' };
-        } catch (e) {
-            console.log(e);
-            return { error: true, data: null, message: e };
-        }
+        return await buildBigPdf({ user, category, objective: offer, type: 'Biete Hilfe' });
     },
-    helper_small: async (params:IParams):Promise<IResponse> => {
-        const { user, request, category, offer } = params;
+    helper_small: async (params:IParamsHelper):Promise<IResponse> => {
+        const { user, category, offer } = params;
         const hash = createFileName();
 
         try {
@@ -154,6 +142,11 @@ const FlyerGenerator = {
             return { error: true, data: null, message: e };
         }
     },
+    seeking_big: async (params:IParamsSeeker):Promise<IResponse> => {
+        const { user, category, request } = params;
+
+        return await buildBigPdf({ user, category, objective: request, type: 'Suche Hilfe' });
+    },
 };
 
 const createFileName = async (): Promise<string> => {
@@ -183,6 +176,89 @@ const buildStream = async (doc: any, filePath: string) => {
     };
 
     return await promiseFn();
+};
+
+const buildBigPdf = async (params: IParams)  => {
+    const { user, category, objective, type } = params;
+    const hash = createFileName();
+
+    try {
+        const filePath = path.resolve(hash + '.pdf');
+
+        // Create a document
+        let doc = new PDFDocument({size: 'A4'});
+
+        // fill the pdf here!
+
+        // Head
+        // doc.lineCap('butt')
+        //     .strokeColor('#1C1C1C')
+        //     .lineWidth(100)
+        //     .moveTo(margin/2, margin/2+50)
+        //     .lineTo(Dina4.width-margin/2,margin/2+50)
+        //     .stroke();
+        doc.image('./public/ressources/images/logo_dark.png', margin, margin/2+10, {height: 80});
+
+        doc.moveDown(1.5);
+        doc.fillColor('#ef7d18')
+            .fontSize(20)
+            .text(type, {width: Dina4.width-(2*margin), align: 'right'})
+            .fillColor('black');
+
+        // User picture (if)
+
+        if ("picture" in user) {
+            doc.image(user.picture, Dina4.width/2-50, 180, {fit: [100,100]})
+        }
+
+        doc.fontSize(12);
+        doc.font('./public/ressources/fonts/Open_Sans/OpenSans-Regular.ttf')
+            .text(user.firstName+" "+user.lastName, margin, 200, {width: Dina4.width-(2*margin), align: 'right'})
+            .moveDown(0.25)
+            .text("Telefonnr.: "+user.phoneNumber, {width: Dina4.width-(2*margin), align: 'right'});
+
+        doc.moveDown(3);
+
+        doc.font('./public/ressources/fonts/Open_Sans/OpenSans-Bold.ttf')
+            .text(objective?.title, {align: 'justify'});
+
+        doc.moveDown(1);
+
+
+        doc.font('./public/ressources/fonts/Open_Sans/OpenSans-Regular.ttf')
+            .text(objective?.description);
+
+        doc.moveDown(2);
+
+        doc.rect(margin, 525, Dina4.width-margin*2, 120).fillAndStroke('#fff', '#1c1c1c');
+        doc.fill('#000').stroke();
+        // doc.fontSize(16);
+        doc
+            .text('Wichtig: Selbstschutz bei Nachbarschaftshilfe', margin+15, 535)
+            .moveDown(0.3)
+            .list([
+                'Hust- und Niesregeln beachten',
+                'Hände gründlich mit Seife waschen',
+                'Abstandhalten',
+                'Atemschutzmasken zum Fremdschutz',
+                'Ausgetauschte Gegenstände reinigen'
+            ], {bulletRadius: 2, bulletIndent: 3});
+
+        doc.image('./public/ressources/images/Logo_Projekt_02.png', margin-25, Dina4.height-margin-margin/4, {height: 60, align: 'left'});
+        doc.image('./public/ressources/images/qr_light.png', Dina4.width/2-50, Dina4.height-margin-margin/2, {fit: [100, 100], align: 'center'});
+        doc.fontSize(16)
+            .text('coronahelfer.eu', Dina4.width/2+50+10, Dina4.height-margin-margin/2+8, {width: Dina4.width, align: 'left'})
+            .moveDown(0.1)
+            .text('hilfefuercorona.de', {width: Dina4.width, align: 'left'})
+            .moveDown(0.1)
+            .text('helpforcorona.de', {width: Dina4.width, align: 'left'});
+
+        const result = await buildStream(doc, filePath);
+        return { error: false, data: result, message: 'success!' };
+    } catch (e) {
+        console.log(e);
+        return { error: true, data: null, message: e };
+    }
 };
 
 // @ts-ignore
