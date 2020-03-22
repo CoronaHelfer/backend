@@ -6,6 +6,7 @@
   "scripts": {
     "dev:build": "tsc",
     "start": "npm run dev:build && node .build/src/server.js",
+    "geocodingServiceTest": "node .build/src/app/geocoding/GeocodingService.js",
     "test": "mocha -r ts-node/register --resolveJsonModule ./src/test/**/*.spec.ts"
   },
   "keywords": [],
