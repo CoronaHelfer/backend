@@ -32,6 +32,7 @@ class RequestController {
                     address.city, address.street_nr);
             }
         }
+        ownPosition = [8.4821159, 49.4705199];
         if (!ownPosition.length) {
             res.status(500).send({error: 'no position'});
             return;
