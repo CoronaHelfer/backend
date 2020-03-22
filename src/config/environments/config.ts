@@ -4,8 +4,8 @@ class Config {
   public DB_URL: string;
   public JWT_TOKEN_SECRET: string;
   public configENV: object;
-  private JWT_EXPIRE_TIME: number;
   public googleApiKey: string;
+  private JWT_EXPIRE_TIME: number;
 
   constructor() {
     // this.configENV = process.env;
@@ -14,7 +14,7 @@ class Config {
     this.DB_URL = 'mongodb://corona-helper:wirvsvirus2020@134.255.225.148:27072/coronaHelper?authSource=admin&readPreference=primary';
     this.JWT_TOKEN_SECRET = '';
     this.JWT_EXPIRE_TIME = 86400; // 1 week
-    this.googleApiKey = ""
+    this.googleApiKey = 'AIzaSyBHMiAx-3Ho18Cropn_rw2agnYvhNt55zQ';
   }
 }
 
