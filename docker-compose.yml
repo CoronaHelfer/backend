@@ -5,7 +5,7 @@ services:
     restart: always
     build: ../Coronahelfer-Hackathon-Frontend 
     ports: 
-      - "8080:80"
+      - "80:80"
     depends_on:
       - app
     links:
@@ -15,7 +15,7 @@ services:
     restart: always
     build: .
     ports:
-      - "8081:3000"
+      - "3000:3000"
     depends_on:
       - mongo
     links:
