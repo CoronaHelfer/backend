@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from '../../public/docs/swagger.json';
 import UserController from '../app/auth/UserController';
@@ -58,6 +59,7 @@ class ExpressMiddlerware {
         this.exApp.use(cookieParser());
         this.exApp.use(bodyParser.urlencoded({extended: true}));
         this.exApp.use(bodyParser.json());
+        this.exApp.use(cors());
     }
 
     private logger() {
