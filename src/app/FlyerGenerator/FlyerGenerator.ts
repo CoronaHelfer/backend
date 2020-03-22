@@ -1,5 +1,5 @@
 // @ts-ignore
-import bcrypt from 'bcryptjs';
+import bcryptjs from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
 import PDFDocument from 'pdfkit';
@@ -150,7 +150,7 @@ const FlyerGenerator = {
 const createFileName = async (): Promise<string> => {
     const date = new Date(Date.now()).getTime();
 
-    return await bcrypt.hash(date.toString(), 10);
+    return await bcryptjs.hash(date.toString(), 10);
 };
 
 const buildStream = async (doc: any, filePath: string) => {

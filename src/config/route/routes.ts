@@ -1,5 +1,6 @@
 import AuthRoute from '../../app/auth/AuthRoute';
 import UserRoute from '../../app/auth/UserRoute';
+import FlyerRoute from '../../app/FlyerGenerator/FlyerRoute';
 import CategoryRoute from '../../app/helpRequests/category/CategoryRoute';
 import RequestPrivateRoute from '../../app/helpRequests/RequestPrivateRoute';
 import RequestPublicRoute from '../../app/helpRequests/RequestPublicRoute';
@@ -9,6 +10,10 @@ const Routes = [
         guard: true,
         route: UserRoute,
         url: 'users',
+    }, {
+        guard: true,
+        route: FlyerRoute,
+        url: 'flyer',
     },
     {
         guard: true,
