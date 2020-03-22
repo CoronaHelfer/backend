@@ -1,5 +1,6 @@
 import Environment from '../../config/environments';
 import UserService from '../auth/UserService';
+import GeocodingService from '../geocoding/GeocodingService';
 import CategoryService from './category/CategoryService';
 import Request from './RequestModel';
 
@@ -89,9 +90,16 @@ class RequestService {
     public async create(q, createdBy) {
         const request = new Request(q);
 
-        // todo get geolocation
-        request.address.position.lat = '123';
-        request.address.position.lon = '321';
+        if (!((request.address.plz && request.address.city && request.address.street && request.address.street_nr) ||
+            (request.address.position.lat && request.address.position.lon))) {
+            throw new Error('Address or Geolocation required');
+        }
+
+        const geo = await GeocodingService.addressToCoordinate(request.address.plz, request.address.street,
+            request.address.city, request.address.street_nr);
+
+        request.address.position.lat = geo.lat;
+        request.address.position.lon = geo.lon;
         request.created_by = createdBy;
 
         this.request = await request.save();

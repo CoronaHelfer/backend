@@ -13,6 +13,9 @@ class GeocodingService {
                 key: Environment.googleApiKey,
             },
         });
+        if (!geocode.data.results.length) {
+            throw new Error('Google API fail');
+        }
         return {
             lat: geocode.data.results[0].geometry.location.lat,
             lon: geocode.data.results[0].geometry.location.lng,
@@ -33,7 +36,7 @@ class GeocodingService {
     }
 }
 
-export default new GeocodingService();
+export default GeocodingService;
 
 // example
 GeocodingService.addressToCoordinate(27404, 'Stader Str.', 'Heeslingen', '3').then((result) => {

@@ -39,11 +39,11 @@ class Request extends mongoose.Schema {
                 },
                 plz: {
                     type: String,
-                    required: true,
+                    required: false,
                 },
                 city: {
                     type: String,
-                    required: true,
+                    required: false,
                 },
                 street: {
                     type: String,
