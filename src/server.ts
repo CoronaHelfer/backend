@@ -27,7 +27,6 @@ class Server {
   }
 
   public main() {
-    console.log(this.config);
     const port = this.config.PORT;
     this.app.listen(port, () => console.log(`Example app listening on port ${port}!`));
   }
