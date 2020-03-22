@@ -71,13 +71,13 @@ class RequestService {
                 category: await CategoryService.findOne({_id: request.category.toString()}),
                 created_by: request.created_by,
                 helper: helperList,
-                confirmed_helper: {
+                confirmed_helper: confirmedHelperObject ? {
                     _id: confirmedHelperObject._id,
                     firstName: confirmedHelperObject.firstName,
                     lastName: confirmedHelperObject.lastName.slice(0, 1) + '.',
                     picture: confirmedHelperObject.picture ? confirmedHelperObject.picture : '',
                     offer_text: confirmedHelperObject.offer_text,
-                },
+                } : null,
                 created_at: request.created_at,
                 time_end: request.time_end,
             });
