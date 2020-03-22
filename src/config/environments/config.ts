@@ -14,7 +14,7 @@ class Config {
     this.DB_URL = 'mongodb://corona-helper:wirvsvirus2020@134.255.225.148:27072/coronaHelper?authSource=admin&readPreference=primary';
     this.JWT_TOKEN_SECRET = '';
     this.JWT_EXPIRE_TIME = 86400; // 1 week
-    this.googleApiKey = 'AIzaSyBHMiAx-3Ho18Cropn_rw2agnYvhNt55zQ';
+    this.googleApiKey = '!!!DO NOT COMMIT THIS LINE!!!';
   }
 }
 
