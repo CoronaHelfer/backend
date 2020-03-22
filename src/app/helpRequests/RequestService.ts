@@ -1,5 +1,6 @@
 import Environment from '../../config/environments';
 import UserService from '../auth/UserService';
+import CategoryService from './category/CategoryService';
 import Request from './RequestModel';
 
 const config = Environment;
@@ -19,7 +20,7 @@ class RequestService {
                 distance: 999, // todo calc distance
                 title: request.title,
                 description: request.description,
-                category: request.category,
+                category: await CategoryService.findOne({_id: request.category.toString()}),
                 created_by: {
                     firstName: createdBy.firstName,
                     lastName: createdBy.lastName.slice(0, 1) + '.',
@@ -60,7 +61,7 @@ class RequestService {
                 _id: request._id,
                 title: request.title,
                 description: request.description,
-                category: request.category,
+                category: await CategoryService.findOne({_id: request.category.toString()}),
                 created_by: request.created_by,
                 helper: helperList,
             });
