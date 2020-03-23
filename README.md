@@ -23,6 +23,17 @@ be sure to use the latest version of `docker-compose.yml`
 ### restore backup
 `docker-compose exec -T db mongorestore --archive --gzip < dump.gz`
 
+# Letsencrypt
+The `certbot` container will try to automatically renew the cert after `85` days
+
+!!DOWNTIMEWARNING!!
+================
+With the current configuration the default nginx will not work until the certificate was successfully created. 
+
+### initialization
+`sudo ./certbot-init.sh` 
+follow the instructions
+
 Please note that the database volume will be managed via docker volume. A restart of the docker daemon can lead to data loss.
 
 Your local repository folders will be mounted into the running docker container on `/app` 
