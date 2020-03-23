@@ -4,3 +4,5 @@
 /public/logs/access.log
 .vscode
 *.pdf
+db
+*.gz
