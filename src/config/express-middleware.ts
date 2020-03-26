@@ -19,8 +19,11 @@ class ExpressMiddlerware {
         this.exApp = app;
         this.parser();
         this.logger();
-        this.router();
-        this.swagger();
+
+        const router = express.Router();
+        this.router(router);
+        this.swagger(router);
+        this.exApp.use(Route.fullPath(), router);
     }
 
     public validateUser(isAuthGuard = true): boolean {
@@ -67,17 +70,16 @@ class ExpressMiddlerware {
         this.exApp.use(Logger.devLogger);
     }
 
-    private router() {
-        const router = express.Router();
+    private router(router) {
         Routes.every((route) => {
             router.use(Route.getUrl(route.url), this.validateUser(route.guard), route.route);
             return true;
         });
-        this.exApp.use(Route.fullPath(), router);
     }
 
-    private swagger() {
-        this.exApp.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {}));
+    private swagger(router) {
+        router.use('/', swaggerUi.serve);
+        router.get('/', swaggerUi.setup(swaggerDocument));
     }
 }
 
