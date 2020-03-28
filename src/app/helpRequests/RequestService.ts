@@ -2,6 +2,7 @@ import Environment from '../../config/environments';
 import UserService from '../auth/UserService';
 import GeocodingService from '../geocoding/GeocodingService';
 import CategoryService from './category/CategoryService';
+import NotificationService from '../notification/NotificationService';
 import Request from './RequestModel';
 
 const config = Environment;
@@ -122,11 +123,14 @@ class RequestService {
 
         request.helper.push(payload);
         request.save();
-        return {status: 'OK', message: 'Hilfe angeboten'};
+
+        NotificationService.notify(request.created_by, 'HELPER_ADDED', body.requestId);
+
+        return { status: 'OK', message: 'Hilfe angeboten' };
     }
 
     public async confirmHelper(helperId: string, userId: string, requestId: string) {
-        const request = await Request.findOne({_id: requestId});
+        const request = await Request.findOne({ _id: requestId });
         if (request.created_by.toString() !== userId) {
             throw new Error('The request did not belongs to you');
         }
@@ -138,7 +142,10 @@ class RequestService {
         }
         request.confirmed_helper = helperId;
         request.save();
-        return {status: 'OK', message: 'Helfer bestätigt'};
+
+        NotificationService.notify(helperId, 'HELP_APPROVED', requestId);
+
+        return { status: 'OK', message: 'Helfer bestätigt' };
     }
 }
 
