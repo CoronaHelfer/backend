@@ -4,6 +4,14 @@
     {
       "description": "local api",
       "url": "http://localhost:3000/api/v1/"
+    },
+    {
+      "description": "dev",
+      "url": "https://dev.coronahelfer.eu/api/v1/"
+    },
+    {
+      "description": "production",
+      "url": "https://coronahelfer.eu/api/v1/"
     }
   ],
   "info": {
