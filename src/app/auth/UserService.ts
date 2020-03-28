@@ -16,6 +16,10 @@ class UserService {
         return await User.findOne(q, projection);
     }
 
+    public async findOneWithProjection(q, projection) {
+        return await User.findOne(q, projection);
+    }
+
     public async create(q) {
         const user = new User(q);
         if (!user.phoneNumber && !user.email) {
@@ -51,6 +55,11 @@ class UserService {
         } else {
             throw new Error('User Not Found');
         }
+    }
+
+    public async saveFcmToken(fcmToken) {
+        this.user.fcmToken = fcmToken;
+        await this.user.save();
     }
 
     public generateJwt() {

@@ -58,6 +58,10 @@ class User extends mongoose.Schema {
                     },
                 },
             },
+            fcmToken: {
+                trim: true,
+                type: String,
+            },
         };
         const user = super(UserSchema, {
             timestamps: {

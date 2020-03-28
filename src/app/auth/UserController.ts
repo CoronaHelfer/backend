@@ -80,6 +80,12 @@ class UserController {
             .then((result) => res.status(200).send({result}))
             .catch((err) => res.status(500).send({error: err.message}));
     }
+
+    public saveFcmToken(req, res) {
+        UserService.saveFcmToken(req.body.fcmToken)
+            .then((result) => res.status(200).send({}))
+            .catch((err) => res.status(500).send({ error: err.message }));
+    }
 }
 
 export default new UserController();
