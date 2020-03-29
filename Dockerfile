@@ -1,7 +1,7 @@
 FROM node:latest
-RUN addgroup --system backend 
+RUN addgroup --system backend
 RUN adduser backend --system --ingroup backend
-RUN mkdir /app 
+RUN mkdir /app
 
 WORKDIR /app
 COPY package.json /app
@@ -11,6 +11,6 @@ RUN chown -R backend:backend /app
 
 EXPOSE 3000
 
-USER backend 
+USER backend
 
 CMD npm start
