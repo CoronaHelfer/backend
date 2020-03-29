@@ -13,4 +13,4 @@ EXPOSE 3000
 
 USER backend
 
-CMD npm start
+CMD ["npm", "start"]
