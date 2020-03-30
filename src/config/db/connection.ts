@@ -3,9 +3,11 @@ import Environment from '../environments';
 
 const config = Environment;
 const dbConectionString = config.DB_URL;
+
 class DBConection {
   constructor() {
-    mongoose.connect(dbConectionString, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true  });
+    mongoose.connect(dbConectionString, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true})
+        .catch((error) => console.error('Connection to the database could not be established:', error));
   }
 
   public errorHandler() {
