@@ -69,3 +69,31 @@ spec:
             backend:
               serviceName: backend-service
               servicePort: 3000
+    - host: corona-helfer-80865a40c6ef962c996c47e3878b673e-0000.eu-de.containers.appdomain.cloud
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: frontend-service
+              servicePort: 80
+    - host: corona-helfer-80865a40c6ef962c996c47e3878b673e-0000.eu-de.containers.appdomain.cloud
+      http:
+        paths:
+          - path: /api
+            backend:
+              serviceName: backend-service
+              servicePort: 3000
+    - host: corona-helfer.eu-de.containers.appdomain.cloud
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: frontend-service
+              servicePort: 80
+    - host: corona-helfer.eu-de.containers.appdomain.cloud
+      http:
+        paths:
+          - path: /api
+            backend:
+              serviceName: backend-service
+              servicePort: 3000
