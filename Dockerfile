@@ -5,7 +5,7 @@ RUN mkdir /app
 
 WORKDIR /app
 COPY package.json /app
-RUN npm install
+RUN npm install --production
 COPY . /app
 RUN chown -R backend:backend /app
 
