@@ -15,7 +15,7 @@ class DBConnection {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true,
-        });
+        }).catch((error) => console.error('Connection to the database could not be established:', error));
     }
 
     public errorHandler() {
