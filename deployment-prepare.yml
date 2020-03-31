@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dev-coronahelfer-eu-tls-secret
+  namespace: prod
+data:
+  tls.crt: YmFzZS02NCBlbmNvZGVkIGNlcnRpZmljYXRlIGNoYWlu
+  tls.key: YmFzZS02NCBlbmNvZGVkIHByaXZhdGUga2V5
+type: kubernetes.io/tls
