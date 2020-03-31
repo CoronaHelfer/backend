@@ -40,6 +40,13 @@ kind: Ingress
 metadata:
   name: corona-helfer-ingress
 spec:
+  tls:
+    - hosts:
+        - corona-helfer-80865a40c6ef962c996c47e3878b673e-0000.eu-de.containers.appdomain.cloud
+        - corona-helfer.eu-de.containers.appdomain.cloud
+        - dev.coronahelfer.eu
+        - coronahelfer.eu
+      secretName: dev-coronahelfer-eu-tls-secret
   rules:
     - host: coronahelfer.eu
       http:
