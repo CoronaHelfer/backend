@@ -10,3 +10,4 @@ data/certbot/www/*
 *.gz
 
 /src/config/db/certificate/*
+/src/config/db/cert
