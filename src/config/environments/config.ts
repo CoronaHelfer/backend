@@ -1,10 +1,14 @@
 class Config {
-    public PORT: string;
-    public API_ROOT_PATH: string;
     public DB_URL: string;
     public JWT_TOKEN_SECRET: string;
-    public configENV: object;
-    public googleApiKey: string;
+    public CERT_PATH: string;
+    public DB_PORT: number;
+    public DB_COLLECTION: string;
+    public DB_PASSWORD: string;
+    public DB_USERNAME: string;
+    public PORT: string;
+    private API_ROOT_PATH: string;
+    private googleApiKey: string;
     private JWT_EXPIRE_TIME: number;
     private DEFAULT_PROFILE_PICTURES: string[];
     private REQUEST_MAX_DISTANCE: number;
@@ -13,8 +17,10 @@ class Config {
         // this.configENV = process.env;
         this.PORT = '3000';
         this.API_ROOT_PATH = 'api';
-        this.DB_URL = 'mongodb://mongo:27017/coronaHelper';
-        this.JWT_TOKEN_SECRET = '';
+        this.DB_PORT = 32470;
+        this.DB_URL = 'ce9f6d8d-e3b1-4c04-9481-fbef09eb3941-0.bpb68u2f0gvaqgd0n64g.databases.appdomain.cloud';
+        this.CERT_PATH = __dirname.substring(0, __dirname.length - 30) + 'src\\config\\db\\cert';
+        this.JWT_TOKEN_SECRET = '!!!DO NOT COMMIT THIS LINE!!!';
         this.JWT_EXPIRE_TIME = 86400; // 1 week
         this.googleApiKey = '!!!DO NOT COMMIT THIS LINE!!!';
         this.DEFAULT_PROFILE_PICTURES = [

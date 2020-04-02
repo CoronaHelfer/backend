@@ -1,20 +1,30 @@
+import fs from 'fs';
 import mongoose from 'mongoose';
 import Environment from '../environments';
 
 const config = Environment;
-const dbConectionString = config.DB_URL;
-class DBConection {
-  constructor() {
-    mongoose.connect(dbConectionString, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true  });
-  }
+const dbConnectionString = `mongodb://${config.DB_USERNAME}:${config.DB_PASSWORD}@${config.DB_URL}:${config.DB_PORT}/${config.DB_COLLECTION}?authSource=admin&replicaSet=replset&ssl=true`;
+const certPath = config.CERT_PATH;
 
-  public errorHandler() {
-    const db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', () => {
-      console.info(`${dbConectionString} DB is Connected with this App`);
-    });
-  }
+class DBConnection {
+    constructor() {
+        const key = fs.readFileSync(certPath);
+
+        mongoose.connect(dbConnectionString, {
+            sslCA: key,
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true,
+        });
+    }
+
+    public errorHandler() {
+        const db = mongoose.connection;
+        db.on('error', console.error.bind(console, 'connection error:'));
+        db.once('open', () => {
+            console.info(`${dbConnectionString} DB is Connected with this App`);
+        });
+    }
 }
 
-export = DBConection;
+export = DBConnection;
