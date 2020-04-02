@@ -30,7 +30,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 3000
+    - protocol: TCP
+      port: 80
       targetPort: 3000
   selector:
     app: backend-app
@@ -63,7 +64,7 @@ spec:
           - path: /api
             backend:
               serviceName: backend-service
-              servicePort: 3000
+              servicePort: 80
     - host: dev.coronahelfer.eu
       http:
         paths:
@@ -77,7 +78,7 @@ spec:
           - path: /api
             backend:
               serviceName: backend-service
-              servicePort: 3000
+              servicePort: 80
     - host: corona-helfer-80865a40c6ef962c996c47e3878b673e-0000.eu-de.containers.appdomain.cloud
       http:
         paths:
@@ -91,7 +92,7 @@ spec:
           - path: /api
             backend:
               serviceName: backend-service
-              servicePort: 3000
+              servicePort: 80
     - host: corona-helfer.eu-de.containers.appdomain.cloud
       http:
         paths:
@@ -105,4 +106,4 @@ spec:
           - path: /api
             backend:
               serviceName: backend-service
-              servicePort: 3000
+              servicePort: 80
