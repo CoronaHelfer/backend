@@ -33,7 +33,6 @@ class Server {
 
   private dbConfig() {
     const db = new DBConnection();
-    db.errorHandler();
     initCategories.start();
   }
 }

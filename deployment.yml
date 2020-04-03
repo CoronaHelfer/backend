@@ -18,6 +18,12 @@ spec:
         - name: backend-app
           ports:
             - containerPort: 3000
+          env:
+            - name: BINDING
+              valueFrom:
+                secretKeyRef:
+                  name: binding-mongo-main-db01
+                  key: binding
 ---
 apiVersion: v1
 kind: Service
