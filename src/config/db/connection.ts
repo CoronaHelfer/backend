@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Environment from '../environments';
+import initCategories from './initCategories';
 
 const config = Environment;
 
@@ -42,6 +43,7 @@ class DBConnection {
             .then(
                 () => {
                     console.log('Database connection successful');
+                    initCategories.start();
                 },
                 console.error.bind(console, 'Connection to the database could not be established:'),
             );

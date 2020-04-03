@@ -23,16 +23,16 @@ class InitCategories {
     ];
 
     public start() {
+        console.log('Initializing database: Create missing categories');
         this.categoriesList.forEach((category) => {
             CategoryService.create(category)
-                .then((result) => {
+                .then(() => {
                     console.log('category created: ' + category.name);
                 })
-                .catch((err) => {
+                .catch(() => {
                     console.log('category exist: ' + category.name);
                 });
         });
-
     }
 }
 
