@@ -1,7 +1,4 @@
-import Environment from '../../../config/environments';
 import Category from './CategoryModel';
-
-const config = Environment;
 
 class CategoryService {
     public category: any;
