@@ -1,10 +1,7 @@
-import Environment from '../../config/environments';
 import UserService from '../auth/UserService';
 import GeocodingService from '../geocoding/GeocodingService';
 import CategoryService from './category/CategoryService';
 import Request from './RequestModel';
-
-const config = Environment;
 
 class RequestService {
   public request: any;
@@ -18,7 +15,8 @@ class RequestService {
 
       const element = {
         _id: request._id,
-        distance: ownPosition ? GeocodingService.distanceBetweenTwoCoordinates(request.address.location.coordinates[0], request.address.location.coordinates[1], ownPosition[0], ownPosition[1]) : 0,
+        distance: ownPosition ? GeocodingService.distanceBetweenTwoCoordinates(request.address.location.coordinates[0],
+          request.address.location.coordinates[1], ownPosition[0], ownPosition[1]) : 0,
         title: request.title,
         description: request.description,
         category: await CategoryService.findOne({_id: request.category.toString()}),
@@ -90,14 +88,20 @@ class RequestService {
   public async create(q, createdBy) {
     const request = new Request(q);
 
-    if (!((request.address && (request.address.plz && request.address.city && request.address.street && request.address.street_nr)) ||
-      (request.address.position && (request.address.position.lat && request.address.position.lon)))) {
+    const addressDefined = request.address && request.address.plz && request.address.city && request.address.street
+      && request.address.street_nr;
+    const locationDefined = request.address && request.address.position && request.address.position.lat
+      && request.address.position.lon;
+
+    if (!addressDefined && !locationDefined) {
       throw new Error('Address or Geolocation required');
     }
-    if (!(request.address.position && (request.address.position.lat && request.address.position.lon))) {
-      request.address.location.coordinates = await GeocodingService.addressToCoordinate
-      (request.address.plz, request.address.street, request.address.city, request.address.street_nr);
+
+    if (!locationDefined) {
+      request.address.location.coordinates = await GeocodingService.addressToCoordinate(request.address.plz,
+        request.address.street, request.address.city, request.address.street_nr);
     }
+
     request.created_by = createdBy;
 
     this.request = await request.save();

@@ -15,7 +15,7 @@ class RequestController {
   }
 
   public async find(req, res) {
-    let ownPosition = [];
+    let ownPosition: number[];
     const address = {
       plz: req.body['address.plz'],
       city: req.body['address.city'],
@@ -31,7 +31,12 @@ class RequestController {
           address.city, address.street_nr);
       }
     }
-    ownPosition = [8.4821159, 49.4705199];
+
+    if (!ownPosition.length) {
+      // testing purposes
+      ownPosition = [8.4821159, 49.4705199];
+    }
+
     if (!ownPosition.length) {
       res.status(500).send({error: 'no position'});
       return;

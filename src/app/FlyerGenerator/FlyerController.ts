@@ -1,7 +1,4 @@
-import Environment from '../../config/environments';
 import FlyerGenerator from '../FlyerGenerator/FlyerGenerator';
-
-const config = Environment;
 
 class FlyerController {
 
