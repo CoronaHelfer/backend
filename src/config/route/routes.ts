@@ -6,35 +6,35 @@ import RequestPrivateRoute from '../../app/helpRequests/RequestPrivateRoute';
 import RequestPublicRoute from '../../app/helpRequests/RequestPublicRoute';
 
 const Routes = [
-    {
-        guard: true,
-        route: UserRoute,
-        url: 'users',
-    }, {
-        guard: true,
-        route: FlyerRoute,
-        url: 'flyer',
-    },
-    {
-        guard: true,
-        route: RequestPrivateRoute,
-        url: 'request',
-    },
-    {
-        guard: false,
-        route: RequestPublicRoute,
-        url: 'publicRequest',
-    },
-    {
-        guard: false,
-        route: CategoryRoute,
-        url: 'category',
-    },
-    {
-        guard: false,
-        route: AuthRoute,
-        url: 'auth',
-    },
+  {
+    guard: true,
+    route: UserRoute,
+    url: 'users',
+  }, {
+    guard: true,
+    route: FlyerRoute,
+    url: 'flyer',
+  },
+  {
+    guard: true,
+    route: RequestPrivateRoute,
+    url: 'request',
+  },
+  {
+    guard: false,
+    route: RequestPublicRoute,
+    url: 'publicRequest',
+  },
+  {
+    guard: false,
+    route: CategoryRoute,
+    url: 'category',
+  },
+  {
+    guard: false,
+    route: AuthRoute,
+    url: 'auth',
+  },
 ];
 
 export default Routes;

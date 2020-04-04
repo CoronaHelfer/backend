@@ -1,11 +1,12 @@
 /* eslint-disable import/first */
 process.env.NODE_ENV = 'test';
-import mongoose from 'mongoose';
-import express from '../../server';
-process.env.API_BASE = '/api/v1';
 // export const request = require('supertest')(express.expressApp());
 import chai from 'chai';
+import mongoose from 'mongoose';
 import supertest from 'supertest';
+import express from '../../server';
+
+process.env.API_BASE = '/api/v1';
 
 export const request = supertest(express);
 export const should = chai.should();
@@ -27,7 +28,7 @@ export const defaultUserData = {
 
 export const loginWithDefaultUser = () => {
   return request.post(process.env.API_BASE + '/auth/login')
-    .send({ userName: defaultUserData.userName, password: defaultUserData.password })
+    .send({userName: defaultUserData.userName, password: defaultUserData.password})
     .expect(200)
     .expect((res) => {
       const token = res.body;

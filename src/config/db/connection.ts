@@ -7,12 +7,12 @@ const config = Environment;
 let binding;
 
 if (process.env.BINDING) {
-    binding = JSON.parse(process.env.BINDING);
+  binding = JSON.parse(process.env.BINDING);
 }
 
 if (binding === undefined) {
-    console.error('ENVIRONMENT variable "BINDING" is not set! MongoDB must be bound to IBM Kubernetes Cluster.');
-    process.exit(1);
+  console.error('ENVIRONMENT variable "BINDING" is not set! MongoDB must be bound to IBM Kubernetes Cluster.');
+  process.exit(1);
 }
 
 const mongodb = binding.connection.mongodb;
@@ -25,29 +25,29 @@ const connectionString = `mongodb://${username}:${password}@${connectionPath[0].
 
 const ca = [Buffer.from(mongodb.certificate.certificate_base64, 'base64')];
 const options = {
-    ssl: true,
-    sslValidate: true,
-    sslCA: ca,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
+  ssl: true,
+  sslValidate: true,
+  sslCA: ca,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
 };
 
 class DBConnection {
-    constructor() {
-        this.connect();
-    }
+  constructor() {
+    this.connect();
+  }
 
-    private connect() {
-        mongoose.connect(connectionString, options)
-            .then(
-                () => {
-                    console.log('Database connection successful');
-                    initCategories.start();
-                },
-                console.error.bind(console, 'Connection to the database could not be established:'),
-            );
-    }
+  private connect() {
+    mongoose.connect(connectionString, options)
+      .then(
+        () => {
+          console.log('Database connection successful');
+          initCategories.start();
+        },
+        console.error.bind(console, 'Connection to the database could not be established:'),
+      );
+  }
 }
 
 export = DBConnection;
