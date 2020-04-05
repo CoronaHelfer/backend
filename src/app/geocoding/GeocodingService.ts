@@ -10,7 +10,7 @@ class GeocodingService {
     const geocode = await client.geocode({
       params: {
         address: street + streetNr + plz + city,
-        key: Environment.googleApiKey,
+        key: Environment.GOOGLE_API_KEY,
       },
     });
     if (!geocode.data.results.length) {

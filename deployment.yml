@@ -24,6 +24,11 @@ spec:
                 secretKeyRef:
                   name: binding-mongo-main-db01
                   key: binding
+            - name: GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: google-api-key
+                  key: key
 ---
 apiVersion: v1
 kind: Service
