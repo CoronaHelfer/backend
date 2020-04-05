@@ -36,5 +36,4 @@ class Config {
         this.REQUEST_MAX_DISTANCE = 10000;
     }
 }
-
 export default Config;
