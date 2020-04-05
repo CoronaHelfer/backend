@@ -1,5 +1,5 @@
 import {Client} from '@googlemaps/google-maps-services-js';
-import Environment from '../../config/environments'; // please config there
+import Environment from '../../config/environments';
 
 const client = new Client({});
 
@@ -34,8 +34,3 @@ class GeocodingService {
 }
 
 export default GeocodingService;
-
-// example
-// GeocodingService.addressToCoordinate(68199, null, null, null).then((result) => {
-//     console.log(result);
-// });
