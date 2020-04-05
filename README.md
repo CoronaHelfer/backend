@@ -14,8 +14,11 @@ npm install
 ```
 
 ### Start the app in development mode
-Define an environment variable `BINDING` with the configuration for the database connection - use
+Required environment variables:
+* `GOOGLE_API_KEY`
+* `BINDING` with the configuration for the database connection - use
 [binding.json](docs/binding.json) as template for the variable value.
+
 ```bash
 npm start
 ```
