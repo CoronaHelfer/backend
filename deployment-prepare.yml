@@ -7,3 +7,12 @@ data:
   tls.crt: YmFzZS02NCBlbmNvZGVkIGNlcnRpZmljYXRlIGNoYWlu
   tls.key: YmFzZS02NCBlbmNvZGVkIHByaXZhdGUga2V5
 type: kubernetes.io/tls
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: google-api-key
+  namespace: prod
+data:
+  key: PGdvb2dsZS1hcGkta2V5Pg==
+type: Opaque
