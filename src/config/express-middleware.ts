@@ -3,8 +3,6 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import swaggerUi from 'swagger-ui-express';
-import * as swaggerDocument from '../../public/docs/swagger.json';
 import UserController from '../app/auth/UserController';
 import Logger from './logger';
 import Route from './route/route.index';
@@ -22,7 +20,6 @@ class ExpressMiddlerware {
 
     const router = express.Router();
     this.router(router);
-    this.swagger(router);
     this.exApp.use(Route.fullPath(), router);
   }
 
@@ -75,11 +72,6 @@ class ExpressMiddlerware {
       router.use(Route.getUrl(route.url), this.validateUser(route.guard), route.route);
       return true;
     });
-  }
-
-  private swagger(router) {
-    router.use('/', swaggerUi.serve);
-    router.get('/', swaggerUi.setup(swaggerDocument));
   }
 }
 
