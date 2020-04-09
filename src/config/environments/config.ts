@@ -18,7 +18,7 @@ class Config {
   constructor() {
     this.PORT = '3000';
     this.API_ROOT_PATH = 'api';
-    this.JWT_TOKEN_SECRET = '!!!DO NOT COMMIT THIS LINE!!!';
+    this.JWT_TOKEN_SECRET = process.env.JWT_TOKEN_SECRET || '!!!DO NOT COMMIT THIS LINE!!!';
     this.JWT_EXPIRE_TIME = 86400; // 1 week
     this.GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || loadGoogleApiKeyFromFile();
     this.DEFAULT_PROFILE_PICTURES = [
