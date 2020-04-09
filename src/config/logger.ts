@@ -4,9 +4,15 @@ import path from 'path';
 
 export default new class Logger {
   public logger: morgan;
+
   constructor() {
-    const accessLogStream = fs.createWriteStream(path.join(process.cwd(), 'public/logs/access.log'), { flags: 'a' });
-    this.logger = morgan('combined', { stream: accessLogStream });
+    const dir = path.join(process.cwd(), 'public/logs');
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+    }
+
+    const accessLogStream = fs.createWriteStream(path.join(dir, 'access.log'), {flags: 'a'});
+    this.logger = morgan('combined', {stream: accessLogStream});
   }
 
   get loggerMiddlerware() {

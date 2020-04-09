@@ -1,11 +1,4 @@
-import {
-  defaultUserData,
-  expect,
-  loginWithDefaultUser,
-  registerDefaultUser,
-  request,
-  should,
-} from './shared.spec';
+import {defaultUserData, expect, loginWithDefaultUser, registerDefaultUser, request, should} from './shared.spec';
 
 let jwtToken;
 describe('# Project Auth APIs', () => {
