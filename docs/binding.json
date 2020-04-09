@@ -1,0 +1,23 @@
+{
+  "connection": {
+    "mongodb": {
+      "authentication": {
+        "password": "db-password",
+        "username": "db-username"
+      },
+      "certificate": {
+        "certificate_base64": "db-ca-cert"
+      },
+      "hosts": [
+        {
+          "hostname": "host-1",
+          "port": 32470
+        },
+        {
+          "hostname": "host-2",
+          "port": 32470
+        }
+      ]
+    }
+  }
+}
