@@ -6,9 +6,9 @@ function loadGoogleApiKeyFromFile() {
 }
 
 class Config {
-  public JWT_SECRET: string;
-  public DB_COLLECTION: string;
-  public PORT: string;
+  protected JWT_SECRET: string;
+  protected DB_COLLECTION: string;
+  protected PORT: string;
   private API_ROOT_PATH: string;
   private GOOGLE_API_KEY: string;
   private JWT_EXPIRE_TIME: number;
