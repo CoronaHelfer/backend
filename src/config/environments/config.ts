@@ -6,9 +6,9 @@ function loadGoogleApiKeyFromFile() {
 }
 
 class Config {
-  public JWT_TOKEN_SECRET: string;
-  public DB_COLLECTION: string;
-  public PORT: string;
+  protected JWT_SECRET: string;
+  protected DB_COLLECTION: string;
+  protected PORT: string;
   private API_ROOT_PATH: string;
   private GOOGLE_API_KEY: string;
   private JWT_EXPIRE_TIME: number;
@@ -16,9 +16,10 @@ class Config {
   private REQUEST_MAX_DISTANCE: number;
 
   constructor() {
+    this.DB_COLLECTION = 'local';
     this.PORT = '3000';
     this.API_ROOT_PATH = 'api';
-    this.JWT_TOKEN_SECRET = '!!!DO NOT COMMIT THIS LINE!!!';
+    this.JWT_SECRET = process.env.JWT_SECRET || '!!!DO NOT COMMIT THIS LINE!!!';
     this.JWT_EXPIRE_TIME = 86400; // 1 week
     this.GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || loadGoogleApiKeyFromFile();
     this.DEFAULT_PROFILE_PICTURES = [
