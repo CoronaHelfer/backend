@@ -9,7 +9,7 @@ class GeocodingService {
     : Promise<number[]> {
     const geocode = await client.geocode({
       params: {
-        address: street + streetNr + plz + city,
+        address: (street || '') + ' ' + (streetNr || '') + ' ' + plz + ' ' + (city || ''),
         key: Environment.GOOGLE_API_KEY,
       },
     });
@@ -28,8 +28,8 @@ class GeocodingService {
       * Math.pow(Math.sin(dlong / 2.0), 2.0);
     const c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
     const d = quatorialEarthRadius * c;
-
-    return d * 1000; // in km
+    console.log(`Distance between [${lat1},${lon1}] and [${lat2},${lon2}] is ${d * 1000}`);
+    return Math.round(d * 1000);
   }
 }
 

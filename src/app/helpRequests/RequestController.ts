@@ -17,13 +17,13 @@ class RequestController {
   public async find(req, res) {
     let ownPosition: number[];
     const address = {
-      plz: req.body['address.plz'],
-      city: req.body['address.city'],
-      street: req.body['address.street'],
-      street_nr: req.body['address.street_nr'],
+      plz: req.headers['address.plz'],
+      city: req.headers['address.city'],
+      street: req.headers['address.street'],
+      street_nr: req.headers['address.street_nr'],
     };
-    const position = req.body.position;
-    if (address.plz || (position && position[0] && position[1])) {
+    const position = req.headers.position;
+    if ((address.plz || address.city) || (position && position[0] && position[1])) {
       if (position && position[0] && position[1]) {
         ownPosition = position;
       } else {
@@ -32,19 +32,14 @@ class RequestController {
       }
     }
 
-    if (!ownPosition.length) {
-      // testing purposes
-      // ownPosition = [8.4821159, 49.4705199];
-    }
-
-    if (!ownPosition.length) {
+    if (!ownPosition || !ownPosition.length) {
       res.status(500).send({error: 'no position'});
       return;
     }
 
     const query = [];
-    if (req.body.category) {
-      query.push({category: {$in: req.body.category}});
+    if (req.headers.category) {
+      query.push({category: {$in: req.headers.category}});
     }
 
     query.push({
