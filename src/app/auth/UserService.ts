@@ -70,6 +70,10 @@ class UserService {
 
     return jwt.sign(payload, secret, {expiresIn});
   }
+
+  public async findOneWithProjection(q, projection) {
+    return await User.findOne(q, projection);
+  }
 }
 
 export default new UserService();
