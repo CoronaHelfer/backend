@@ -66,6 +66,12 @@ class RequestController {
       .catch((err) => res.status(500).send({error: err.message}));
   }
 
+  public deleteOwn(req, res) {
+    RequestService.deleteOwn(req.decoded._id, req.body.requestId)
+      .then((result) => res.status(200).send({result}))
+      .catch((err) => res.status(500).send({error: err.message}));
+  }
+
   public getListOfOwnHelps(req, res) {
     const userId = req.decoded._id;
     RequestService.find({'helper.helperId': userId}, userId)
