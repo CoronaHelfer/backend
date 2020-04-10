@@ -1,6 +1,6 @@
 import UserService from '../auth/UserService';
+import CategoryService from '../category/CategoryService';
 import GeocodingService from '../geocoding/GeocodingService';
-import CategoryService from './category/CategoryService';
 import Request from './RequestModel';
 
 class RequestService {
@@ -143,6 +143,18 @@ class RequestService {
     request.confirmed_helper = helperId;
     request.save();
     return {status: 'OK', message: 'Helfer bestätigt'};
+  }
+
+  public async deleteOwn(userId: string, requestId: string) {
+    const request = await Request.findOne({_id: requestId});
+    if (!request) {
+      throw new Error('Request not found');
+    }
+    if (request.created_by.toString() !== userId) {
+      throw new Error('The request did not belongs to you');
+    }
+    request.delete();
+    return {status: 'OK', message: 'Request gelöscht'};
   }
 }
 
