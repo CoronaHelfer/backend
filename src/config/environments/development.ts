@@ -3,7 +3,7 @@ import Config from './config';
 class Development extends Config {
   constructor() {
     super();
-    this.JWT_TOKEN_SECRET = 'RESTFULAPIs';
+    this.JWT_SECRET = 'RESTFULAPIs';
     this.DB_COLLECTION = 'coronahelfer-dev';
   }
 

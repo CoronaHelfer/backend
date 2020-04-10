@@ -54,7 +54,7 @@ class UserService {
   }
 
   public generateJwt() {
-    const secret = config.JWT_TOKEN_SECRET;
+    const secret = config.JWT_SECRET;
     const expiresIn = config.JWT_EXPIRE_TIME;
 
     const payload = {

@@ -32,7 +32,7 @@ class ExpressMiddlerware {
         if (!token) {
           res.status(403).send(errorMsg).end();
         } else {
-          jwt.verify(token, this.config.JWT_TOKEN_SECRET, (err, decoded) => {
+          jwt.verify(token, this.config.JWT_SECRET, (err, decoded) => {
             req.decoded = decoded;
             if (err) {
               errorMsg.reason = err;
