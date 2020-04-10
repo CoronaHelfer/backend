@@ -1,0 +1,31 @@
+import Category from './CategoryModel';
+
+class CategoryService {
+  public category: any;
+
+  public async find(q) {
+    const projection = {
+      __v: false,
+      created_at: false,
+      updated_at: false,
+    };
+    return Category.find(q, projection);
+  }
+
+  public async findOne(q) {
+    const projection = {
+      __v: false,
+      created_at: false,
+      updated_at: false,
+    };
+    return Category.findOne(q, projection);
+  }
+
+  public async create(q) {
+    const category = new Category(q);
+    this.category = await category.save();
+    return this.category;
+  }
+}
+
+export default new CategoryService();

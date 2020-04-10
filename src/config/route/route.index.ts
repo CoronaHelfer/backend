@@ -1,4 +1,3 @@
-
 class Route {
 
   private apiPathName: string;

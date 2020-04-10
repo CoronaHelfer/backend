@@ -8,3 +8,5 @@ data/db
 data/certbot/conf/*
 data/certbot/www/*
 *.gz
+*.log
+*.logs

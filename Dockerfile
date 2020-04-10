@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:alpine
 RUN addgroup --system backend
 RUN adduser backend --system --ingroup backend
 RUN mkdir /app
