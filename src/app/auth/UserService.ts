@@ -16,7 +16,6 @@ class UserService {
     return await User.findOne(q, projection);
   }
 
-
   public async create(q) {
     const user = new User(q);
     if (!user.phoneNumber && !user.email) {
@@ -54,17 +53,14 @@ class UserService {
     }
   }
 
-
-    public async saveFcmToken(fcmToken) {
-        this.user.fcmToken = fcmToken;
-        await this.user.save();
-    }
-
+  public async saveFcmToken(fcmToken) {
+    this.user.fcmToken = fcmToken;
+    await this.user.save();
+  }
 
   public generateJwt() {
     const secret = config.JWT_SECRET;
     const expiresIn = config.JWT_EXPIRE_TIME;
-
 
     const payload = {
       _id: this.user._id,

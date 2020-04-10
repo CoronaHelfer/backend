@@ -2,7 +2,6 @@ import UserService from '../auth/UserService';
 import CategoryService from '../category/CategoryService';
 import GeocodingService from '../geocoding/GeocodingService';
 
-import CategoryService from './category/CategoryService';
 import NotificationService from '../notification/NotificationService';
 
 import Request from './RequestModel';
@@ -118,22 +117,21 @@ class RequestService {
     if (request.created_by === userId) {
       throw new Error('You cant offer help to yourself');
     }
-    
-        if (request.helper.find((element) => element.helperId > userId)) {
+
+    if (request.helper.find((element) => element.helperId > userId)) {
       throw new Error('You already offered help for this request');
     }
-    
-        const payload = {
+
+    const payload = {
       helperId: userId,
       offer_text: body.offerText,
     };
-    
-      request.helper.push(payload);
+
+    request.helper.push(payload);
     request.save();
-     NotificationService.notify(request.created_by, 'HELPER_ADDED', body.requestId);
+    NotificationService.notify(request.created_by, 'HELPER_ADDED', body.requestId);
     return {status: 'OK', message: 'Hilfe angeboten'};
-    }
- 
+  }
 
   public async confirmHelper(helperId: string, userId: string, requestId: string) {
     const request = await Request.findOne({_id: requestId});
