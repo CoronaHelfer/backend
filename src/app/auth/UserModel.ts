@@ -58,6 +58,10 @@ class User extends mongoose.Schema {
           },
         },
       },
+       fcmToken: {
+                trim: true,
+                type: String,
+            },
     };
     const user = super(UserSchema, {
       timestamps: {
@@ -78,6 +82,7 @@ class User extends mongoose.Schema {
     this.user.methods.createPasswordHash = createPasswordHash;
     return this.user;
   }
+
 }
 
 export default mongoose.model('User', new User());
