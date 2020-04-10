@@ -1,4 +1,4 @@
-import CategoryService from '../../app/helpRequests/category/CategoryService';
+import CategoryService from '../../app/category/CategoryService';
 
 class InitCategories {
 
