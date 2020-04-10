@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 function loadGoogleApiKeyFromFile() {
-  const devPath = __dirname.substring(0, __dirname.length - 30) + 'src\\config\\environments\\googleAPI.txt';
+  const devPath = __dirname.substring(0, __dirname.length - 30) + 'config\\environments\\googleAPI.txt';
   return fs.readFileSync(devPath, {encoding: 'utf8'});
 }
 
