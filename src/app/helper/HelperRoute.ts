@@ -3,8 +3,9 @@ import HelperController from './HelperController';
 
 const router = Router();
 
-router.post('/helper', HelperController.offerHelp);
-router.put('/helper', HelperController.confirmHelp);
-router.get('/helper', HelperController.getListOfOwnHelps);
+router.post('/', HelperController.offerHelp);
+router.put('/', HelperController.confirmHelp);
+router.get('/', HelperController.getListOfOwnHelps);
+router.delete('/', HelperController.removeHelperAsConfirmed);
 
 export default router;
