@@ -27,6 +27,11 @@ class HelperController {
       .catch((err) => res.status(500).send({error: err.message}));
   }
 
+  public removeHelperAsConfirmed(req, res) {
+    HelperService.removeHelperAsConfirmed(req.body.requestId, req.decoded._id, req.body.helperId)
+      .then((result) => res.status(200).send({result}))
+      .catch((err) => res.status(500).send({error: err.message}));
+  }
 }
 
 export default new HelperController();

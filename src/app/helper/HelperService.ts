@@ -1,4 +1,5 @@
 import Request from '../helpRequests/RequestModel';
+import NotificationService from '../notification/NotificationService';
 
 class HelperService {
   public async addHelper(body, userId: string) {
@@ -19,6 +20,7 @@ class HelperService {
 
     request.helper.push(payload);
     request.save();
+    NotificationService.notify(request.created_by, 'HELPER_ADDED', body.requestId);
     return {status: 'OK', message: 'Hilfe angeboten'};
   }
 
@@ -35,7 +37,25 @@ class HelperService {
     }
     request.confirmed_helper = helperId;
     request.save();
+    NotificationService.notify(helperId, 'HELP_APPROVED', requestId);
     return {status: 'OK', message: 'Helfer bestätigt'};
+  }
+
+  public async removeHelperAsConfirmed(requestId: any, userId: any, helperId: any) {
+    const request = await Request.findOne({_id: requestId});
+    if (!request) {
+      throw new Error('Request not found');
+    }
+    if (request.created_by.toString() !== userId) {
+      throw new Error('The request did not belongs to you');
+    }
+    if (!request.confirmed_helper || request.confirmed_helper._id.toString() !== helperId) {
+      throw new Error('The helper did not exist as confirmed');
+    }
+    request.confirmed_helper = null;
+    request.save();
+
+    return {status: 'OK', message: 'Helfer entfernt'};
   }
 }
 
