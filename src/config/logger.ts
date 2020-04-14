@@ -8,7 +8,7 @@ export default new class Logger {
   constructor() {
     const dir = path.join(process.cwd(), 'public/logs');
     if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
+      fs.mkdirSync(dir, {recursive: true});
     }
 
     const accessLogStream = fs.createWriteStream(path.join(dir, 'access.log'), {flags: 'a'});
