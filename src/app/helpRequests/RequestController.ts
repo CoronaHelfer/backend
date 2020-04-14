@@ -22,7 +22,7 @@ class RequestController {
       street: req.headers['address.street'],
       street_nr: req.headers['address.street_nr'],
     };
-    const position = req.headers.position;
+    const position = req.headers.position ? JSON.parse(`[${req.headers.position}]`) : null;
     if ((address.plz || address.city) || (position && position[0] && position[1])) {
       if (position && position[0] && position[1]) {
         ownPosition = position;
