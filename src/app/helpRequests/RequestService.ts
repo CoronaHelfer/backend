@@ -119,6 +119,24 @@ class RequestService {
     request.delete();
     return {status: 'OK', message: 'Request gelöscht'};
   }
+
+  public async finish(userId: string, requestId: string) {
+    const request = await Request.findOne({_id: requestId});
+    if (!request) {
+      throw new Error('Request not found');
+    }
+    if (request.created_by.toString() !== userId) {
+      throw new Error('The request did not belongs to you');
+    }
+    if (request.isFinished) {
+      throw new Error('The Request is already finished');
+    }
+
+    request.isFinished = true;
+    request.save();
+
+    return {status: 'OK', message: 'Request finished'};
+  }
 }
 
 export default new RequestService();

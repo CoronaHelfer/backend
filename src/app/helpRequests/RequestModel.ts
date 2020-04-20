@@ -61,6 +61,14 @@ class Request extends mongoose.Schema {
         type: Date,
         required: false,
       },
+      isFinished: {
+        type: Boolean,
+        default: false,
+      },
+      isPublic: {
+        type: Boolean,
+        default: true,
+      },
       confirmed_helper: {
         type: ObjectId,
         ref: 'User',

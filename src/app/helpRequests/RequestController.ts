@@ -71,6 +71,12 @@ class RequestController {
       .then((result) => res.status(200).send({result}))
       .catch((err) => res.status(500).send({error: err.message}));
   }
+
+  public finish(req, res) {
+    RequestService.finish(req.decoded._id, req.body.requestId)
+      .then((result) => res.status(200).send({result}))
+      .catch((err) => res.status(500).send({error: err.message}));
+  }
 }
 
 export default new RequestController();
