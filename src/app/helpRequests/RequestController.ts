@@ -17,15 +17,16 @@ class RequestController {
   public async find(req, res) {
     let ownPosition: number[];
     const address = {
-      plz: req.headers['address.plz'],
-      city: req.headers['address.city'],
-      street: req.headers['address.street'],
-      street_nr: req.headers['address.street_nr'],
+      plz: req.query.plz,
+      city: req.query.city,
+      street: req.query.street,
+      street_nr: req.query.street_nr,
     };
-    const position = req.headers.position ? JSON.parse(`[${req.headers.position}]`) : null;
-    if ((address.plz || address.city) || (position && position[0] && position[1])) {
-      if (position && position[0] && position[1]) {
-        ownPosition = position;
+    const latitude = req.query.lat;
+    const longitude = req.query.lon;
+    if ((address.plz || address.city) || (latitude && longitude)) {
+      if (latitude && longitude) {
+        ownPosition = [longitude, latitude];
       } else {
         ownPosition = await GeocodingService.addressToCoordinate(address.plz, address.street,
           address.city, address.street_nr);

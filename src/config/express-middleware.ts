@@ -33,7 +33,6 @@ class ExpressMiddlerware {
           res.status(403).send(errorMsg).end();
         } else {
           const firstDecode = jwt.decode(token);
-          console.log(firstDecode._id);
           UserService.findOne({_id: firstDecode._id}).then((user) => {
             jwt.verify(token, `${user.jwtSecret}${this.config.JWT_SECRET}`, (err, decoded) => {
               req.decoded = decoded;
