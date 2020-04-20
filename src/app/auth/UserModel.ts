@@ -62,6 +62,12 @@ class User extends mongoose.Schema {
         trim: true,
         type: String,
       },
+      jwtSecret: {
+        type: Number,
+        default: () => {
+          return Math.floor(Math.random() * 99999) + 10000;
+        },
+      },
     };
     const user = super(UserSchema, {
       timestamps: {

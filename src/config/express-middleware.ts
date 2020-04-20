@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import UserController from '../app/auth/UserController';
+import UserService from '../app/auth/UserService';
 import Logger from './logger';
 import Route from './route/route.index';
 import Routes from './route/routes';
@@ -32,20 +32,18 @@ class ExpressMiddlerware {
         if (!token) {
           res.status(403).send(errorMsg).end();
         } else {
-          jwt.verify(token, this.config.JWT_SECRET, (err, decoded) => {
-            req.decoded = decoded;
-            if (err) {
-              errorMsg.reason = err;
-              res.status(403).send(errorMsg);
-            } else {
-              UserController.didExist(decoded._id).then((userExist) => {
-                if (userExist) {
-                  next();
-                } else {
-                  res.status(403).send(errorMsg);
-                }
-              });
-            }
+          const firstDecode = jwt.decode(token);
+          console.log(firstDecode._id);
+          UserService.findOne({_id: firstDecode._id}).then((user) => {
+            jwt.verify(token, `${user.jwtSecret}${this.config.JWT_SECRET}`, (err, decoded) => {
+              req.decoded = decoded;
+              if (err) {
+                errorMsg.reason = err;
+                res.status(403).send(errorMsg);
+              } else {
+                next();
+              }
+            });
           });
         }
       } else {

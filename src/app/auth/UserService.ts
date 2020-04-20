@@ -13,7 +13,11 @@ class UserService {
       verification: false,
       passwordHash: false,
     };
-    return await User.findOne(q, projection);
+    const user =  await User.findOne(q, projection);
+    if (!user) {
+      throw Error('User not found');
+    }
+    return user;
   }
 
   public async create(q) {
@@ -59,8 +63,8 @@ class UserService {
   }
 
   public generateJwt() {
-    const secret = config.JWT_SECRET;
-    const expiresIn = config.JWT_EXPIRE_TIME;
+    const secret = `${this.user.jwtSecret}${config.JWT_SECRET}`;
+    const expiresIn = 86400; // 24h
 
     const payload = {
       _id: this.user._id,
