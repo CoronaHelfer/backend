@@ -28,6 +28,7 @@ class RequestService {
         },
         confirmed_helper: request.confirmed_helper,
         created_at: request.created_at,
+        time_start: request.time_start,
         time_end: request.time_end,
       };
 
@@ -78,7 +79,7 @@ class RequestService {
           offer_text: confirmedHelperObject.offer_text,
         } : null,
         created_at: request.created_at,
-        time_end: request.time_end,
+        time_start: request.time_start,
       });
     }
 

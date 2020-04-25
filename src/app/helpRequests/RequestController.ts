@@ -16,35 +16,38 @@ class RequestController {
 
   public async find(req, res) {
     let ownPosition: number[];
+
     const address = {
       plz: req.query.plz,
       city: req.query.city,
       street: req.query.street,
       street_nr: req.query.street_nr,
     };
+
     const latitude = req.query.lat;
     const longitude = req.query.lon;
-    if ((address.plz || address.city) || (latitude && longitude)) {
-      if (latitude && longitude) {
-        ownPosition = [longitude, latitude];
-      } else {
-        ownPosition = await GeocodingService.addressToCoordinate(address.plz, address.street,
-          address.city, address.street_nr);
-      }
+
+    if (latitude && longitude) {
+      ownPosition = [longitude, latitude];
+    } else if (address.plz || address.city) {
+      ownPosition = await GeocodingService.addressToCoordinate(
+        address.plz,
+        address.street,
+        address.city,
+        address.street_nr,
+      );
     }
 
-    if (!ownPosition || !ownPosition.length) {
-      res.status(500).send({error: 'no position'});
-      return;
-    }
+    const query: any = {};
 
-    const query = [];
     if (req.headers.category) {
-      query.push({category: {$in: req.headers.category}});
+      query.category = {
+        $in: req.headers.category,
+      };
     }
 
-    query.push({
-      'address.location': {
+    if (ownPosition) {
+      query.address.location = {
         $near: {
           $geometry: {
             type: 'Point',
@@ -53,10 +56,10 @@ class RequestController {
           $maxDistance: config.REQUEST_MAX_DISTANCE,
           $minDistance: 0,
         },
-      },
-    });
+      };
+    }
 
-    RequestService.find({$and: query}, null, ownPosition)
+    RequestService.find(query, null, ownPosition)
       .then((result) => res.status(200).send({result}))
       .catch((err) => res.status(500).send({error: err.message}));
   }
