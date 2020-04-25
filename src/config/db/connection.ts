@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import { once } from 'ramda';
+
 import Environment from '../environments';
-import initCategories from './initCategories';
 
 const config = Environment;
 
@@ -46,6 +47,7 @@ if (process.env.NODE_ENV === 'production') {
   };
 } else {
   connectionString = 'mongodb://localhost:27097';
+
   options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -55,21 +57,14 @@ if (process.env.NODE_ENV === 'production') {
   };
 }
 
-class DBConnection {
-  constructor() {
-    this.connect();
-  }
+export default once(async () => {
+  try {
+    await mongoose.connect(connectionString, options);
 
-  private connect() {
-    mongoose.connect(connectionString, options)
-      .then(
-        () => {
-          console.log('Database connection successful');
-          initCategories.start();
-        },
-        console.error.bind(console, 'Connection to the database could not be established:'),
-      );
-  }
-}
+    return mongoose.connection;
+  } catch (error) {
+    console.error(`Connection to the database could not be established: ${error}`);
 
-export = DBConnection;
+    throw error;
+  }
+});
