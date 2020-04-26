@@ -10,8 +10,8 @@ class UserService {
   public async findOne(q) {
     const projection = {
       __v: false,
-      verification: false,
       passwordHash: false,
+      jwtSecret: false,
     };
     const user =  await User.findOne(q, projection);
     if (!user) {
