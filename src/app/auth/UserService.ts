@@ -79,10 +79,11 @@ class UserService {
     return await User.findOne(q, projection);
   }
 
-  public async updateProfile(address: { city: string; street: string; street_nr: string; plz: number },
+  public async updateProfile(city: string, street: string, streetNr: string, plz: number,
                              picture: string, userId: string) {
+
     const user = await User.findOne({_id: userId});
-    user.address = address;
+    user.address = {city, street, plz, street_nr: streetNr};
     if (picture) {
       user.picture = picture;
     }

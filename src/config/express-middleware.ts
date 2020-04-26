@@ -34,7 +34,7 @@ class ExpressMiddlerware {
         } else {
           const firstDecode = jwt.decode(token);
           if (!firstDecode) {
-            res.status(403).send('wrong token format');
+            res.status(403).send();
           }
           User.findOne({_id: firstDecode._id}).then((user) => {
             jwt.verify(token, `${user.jwtSecret}${this.config.JWT_SECRET}`, (err, decoded) => {

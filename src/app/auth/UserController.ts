@@ -88,16 +88,10 @@ class UserController {
   }
 
   public changeProfileInformation(req, res) {
-    const address = {
-      plz: req.body.plz,
-      city: req.body.city,
-      street: req.body.street,
-      street_nr: req.body.street_nr,
-    };
-    const picture = req.body.picture;
+    UserService.updateProfile(req.body.city, req.body.street, req.body.street_nr,
+      req.body.plz, req.body.picture, req.decoded._id)
 
-    UserService.updateProfile(address, picture, req.decoded._id)
-      .then((result) => res.status(200).send({}))
+      .then((result) => res.status(200).send({result}))
       .catch((err) => res.status(500).send({error: err.message}));
   }
 }
