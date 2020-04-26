@@ -1,11 +1,7 @@
-import Environment from '../../config/environments';
 import GeocodingService from '../geocoding/GeocodingService';
 import RequestService from './RequestService';
 
-const config = Environment;
-
 class RequestController {
-
   public create(req, res) {
     const body = req.body;
 
@@ -15,49 +11,36 @@ class RequestController {
   }
 
   public async find(req, res) {
-    let ownPosition: number[];
-
-    const address = {
-      plz: req.query.plz,
-      city: req.query.city,
-      street: req.query.street,
-      street_nr: req.query.street_nr,
-    };
-
-    const latitude = req.query.lat;
-    const longitude = req.query.lon;
-
-    if (latitude && longitude) {
-      ownPosition = [longitude, latitude];
-    } else if (address.plz || address.city) {
-      ownPosition = await GeocodingService.addressToCoordinate(
-        address.plz,
-        address.street,
-        address.city,
-        address.street_nr,
-      );
-    }
-
     const query: any = {};
+    let ownPosition: number[] = [];
 
-    if (req.headers.category) {
-      query.category = {
-        $in: req.headers.category,
-      };
-    }
+    if (req.query.zipcode) {
+      ownPosition = await GeocodingService.addressToCoordinate(req.query.zipcode);
 
-    if (ownPosition) {
-      query.address.location = {
-        $near: {
-          $geometry: {
-            type: 'Point',
-            coordinates: ownPosition,
+      // Compute radius using radians
+      // Divide distance by Earth radius
+      // Earth Radius = 6378 km
+      const radius = req.query.distance / 6378;
+
+      if (ownPosition) {
+        query['address.location'] = {
+          $geoWithin: {
+            $centerSphere: [
+              ownPosition,
+              radius || 10,
+            ],
           },
-          $maxDistance: config.REQUEST_MAX_DISTANCE,
-          $minDistance: 0,
-        },
+        };
+      }
+    }
+
+    if (req.query.categoryIds) {
+      query.category = {
+        $in: req.query.categoryIds.split(','),
       };
     }
+
+    console.log(JSON.stringify(query, null, 2));
 
     RequestService.find(query, null, ownPosition)
       .then((result) => res.status(200).send({result}))
