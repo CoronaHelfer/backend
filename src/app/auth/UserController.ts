@@ -86,6 +86,20 @@ class UserController {
       .then((result) => res.status(200).send({}))
       .catch((err) => res.status(500).send({error: err.message}));
   }
+
+  public changeProfileInformation(req, res) {
+    const address = {
+      plz: req.body.plz,
+      city: req.body.city,
+      street: req.body.street,
+      street_nr: req.body.street_nr,
+    };
+    const picture = req.body.picture;
+
+    UserService.updateProfile(address, picture, req.decoded._id)
+      .then((result) => res.status(200).send({}))
+      .catch((err) => res.status(500).send({error: err.message}));
+  }
 }
 
 export default new UserController();

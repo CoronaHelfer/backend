@@ -13,7 +13,7 @@ class UserService {
       passwordHash: false,
       jwtSecret: false,
     };
-    const user =  await User.findOne(q, projection);
+    const user = await User.findOne(q, projection);
     if (!user) {
       throw Error('User not found');
     }
@@ -77,6 +77,19 @@ class UserService {
 
   public async findOneWithProjection(q, projection) {
     return await User.findOne(q, projection);
+  }
+
+  public async updateProfile(address: { city: string; street: string; street_nr: string; plz: number },
+                             picture: string, userId: string) {
+    const user = await User.findOne({_id: userId});
+    user.address = address;
+    if (picture) {
+      user.picture = picture;
+    }
+
+    user.save();
+
+    return user;
   }
 }
 
