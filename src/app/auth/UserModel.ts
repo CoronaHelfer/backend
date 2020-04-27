@@ -91,7 +91,6 @@ class User extends mongoose.Schema {
       return bcryptjs.compareSync(password, passwordHash);
     };
     const createPasswordHash = (password) => {
-      console.log(password);
       return bcryptjs.hashSync(password, 10);
     };
     this.user.methods.validatePassword = validatePassword;

@@ -7,7 +7,7 @@ connectDatabase();
 
 import models from './declare-models';
 
-loadDatabase(models, `${__dirname}/seeds/${process.env.NODE_ENV}`)
+loadDatabase(models, `${__dirname}/seeds/development`)
 .then(nAry(0, console.log.bind(console, 'Success!')))
 .catch(console.error.bind(console))
 .then(process.exit.bind(process));

@@ -14,7 +14,17 @@ let ca;
 let connectionString;
 let options;
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.LOCAL_DB) {
+  connectionString = 'mongodb://localhost:27097';
+
+  options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    dbName: 'coronahelfer-local',
+  };
+} else {
   if (process.env.BINDING) {
     binding = JSON.parse(process.env.BINDING);
   }
@@ -45,21 +55,13 @@ if (process.env.NODE_ENV === 'production') {
     useCreateIndex: true,
     useFindAndModify: false,
   };
-} else {
-  connectionString = 'mongodb://localhost:27097';
-
-  options = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    dbName: 'coronahelfer-local',
-  };
 }
 
 export default once(async () => {
   try {
     await mongoose.connect(connectionString, options);
+
+    console.log(`Connected to ${connectionString}/${options.dbName}`);
 
     return mongoose.connection;
   } catch (error) {
