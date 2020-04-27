@@ -23,7 +23,7 @@ class UserService {
   public async create(q) {
     const user = new User(q);
     if (!user.phoneNumber && !user.email) {
-      throw new Error('Email or Phone number required');
+      throw new Error('400');
     }
     user.passwordHash = user.createPasswordHash(q.password);
     this.user = await user.save();
@@ -49,11 +49,16 @@ class UserService {
     }
 
     const user = await User.findOne({$or: query});
-    if (user && user.validatePassword(password, user.passwordHash)) {
+    if (!user) {
+      throw new Error('404');
+    }
+
+    if (user.validatePassword(password, user.passwordHash)) {
       this.user = user;
+
       return this.generateJwt();
     } else {
-      throw new Error('User Not Found');
+      throw new Error('401');
     }
   }
 

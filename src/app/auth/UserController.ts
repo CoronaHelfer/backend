@@ -4,16 +4,33 @@ import UserService from './UserService';
 class UserController {
 
   public login(req, res) {
-    const body = req.body;
-    UserService.isValidUser(body)
-      .then((result) => res.status(200).send({token: result}))
-      .catch((err) => res.status(500).send({error: err.message}));
+    UserService
+    .isValidUser(req.body)
+    .then((result) => res.status(200).send({ token: result }))
+    .catch((error) => {
+      if (error.message === '401') {
+        return res.status(401).send({ message: 'Invalid credentials' });
+      }
+
+      if (error.message === '404') {
+        return res.status(404).send({ message: 'No user found for this email address' });
+      }
+
+      return res.status(500).send();
+    });
   }
 
   public register(req, res) {
     UserService.create(req.body)
-      .then((result) => res.status(201).send({token: result}))
-      .catch((err) => res.status(500).send({error: err.message}));
+    .then((result) => res.status(201).send({token: result}))
+    .catch((error) => {
+
+      if (error.message === '400') {
+        return res.status(400).send({ message: 'No email address or phone number provided' });
+      }
+
+      res.status(500).send();
+    });
   }
 
   // public search(req, res) {
