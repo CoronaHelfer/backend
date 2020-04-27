@@ -86,6 +86,14 @@ class UserController {
       .then((result) => res.status(200).send({}))
       .catch((err) => res.status(500).send({error: err.message}));
   }
+
+  public changeProfileInformation(req, res) {
+    UserService.updateProfile(req.body.city, req.body.street, req.body.street_nr,
+      req.body.plz, req.body.picture, req.decoded._id)
+
+      .then((result) => res.status(200).send({result}))
+      .catch((err) => res.status(500).send({error: err.message}));
+  }
 }
 
 export default new UserController();

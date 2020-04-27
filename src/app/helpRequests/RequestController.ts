@@ -1,11 +1,7 @@
-import Environment from '../../config/environments';
 import GeocodingService from '../geocoding/GeocodingService';
 import RequestService from './RequestService';
 
-const config = Environment;
-
 class RequestController {
-
   public create(req, res) {
     const body = req.body;
 
@@ -15,48 +11,38 @@ class RequestController {
   }
 
   public async find(req, res) {
-    let ownPosition: number[];
-    const address = {
-      plz: req.query.plz,
-      city: req.query.city,
-      street: req.query.street,
-      street_nr: req.query.street_nr,
-    };
-    const latitude = req.query.lat;
-    const longitude = req.query.lon;
-    if ((address.plz || address.city) || (latitude && longitude)) {
-      if (latitude && longitude) {
-        ownPosition = [longitude, latitude];
-      } else {
-        ownPosition = await GeocodingService.addressToCoordinate(address.plz, address.street,
-          address.city, address.street_nr);
+    const query: any = {};
+    let ownPosition: number[] = [];
+
+    if (req.query.zipcode) {
+      ownPosition = await GeocodingService.addressToCoordinate(req.query.zipcode);
+
+      // Compute radius using radians
+      // Divide distance by Earth radius
+      // Earth Radius = 6378 km
+      const radius = req.query.distance / 6378;
+
+      if (ownPosition) {
+        query['address.location'] = {
+          $geoWithin: {
+            $centerSphere: [
+              ownPosition,
+              radius || 10,
+            ],
+          },
+        };
       }
     }
 
-    if (!ownPosition || !ownPosition.length) {
-      res.status(500).send({error: 'no position'});
-      return;
+    if (req.query.categoryIds) {
+      query.category = {
+        $in: req.query.categoryIds.split(','),
+      };
     }
 
-    const query = [];
-    if (req.headers.category) {
-      query.push({category: {$in: req.headers.category}});
-    }
+    console.log(JSON.stringify(query, null, 2));
 
-    query.push({
-      'address.location': {
-        $near: {
-          $geometry: {
-            type: 'Point',
-            coordinates: ownPosition,
-          },
-          $maxDistance: config.REQUEST_MAX_DISTANCE,
-          $minDistance: 0,
-        },
-      },
-    });
-
-    RequestService.find({$and: query}, null, ownPosition)
+    RequestService.find(query, null, ownPosition)
       .then((result) => res.status(200).send({result}))
       .catch((err) => res.status(500).send({error: err.message}));
   }
