@@ -40,8 +40,6 @@ class RequestController {
       };
     }
 
-    console.log(JSON.stringify(query, null, 2));
-
     RequestService.find(query, null, ownPosition)
       .then((result) => res.status(200).send({result}))
       .catch((err) => res.status(500).send({error: err.message}));

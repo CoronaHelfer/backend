@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:build": "tsc",
-    "start": "npm run dev:build && node .build/server.js",
+    "seed:dev": "LOCAL_DB=true ts-node ./src/config/db/seed-database.ts",
+    "dev": "docker-compose up -d && LOCAL_DB=true tsnd ./src/server.ts",
+    "build": "tsc",
+    "start": "npm run build && node .build/server.js",
     "geocodingServiceTest": "node .build/src/app/geocoding/GeocodingService.js",
     "test": "mocha -r ts-node/register --resolveJsonModule ./src/test/**/*.spec.ts"
   },
@@ -28,6 +30,7 @@
     "morgan": "^1.9.1",
     "path": "^0.12.7",
     "pdfkit": "^0.11.0",
+    "ramda": "^0.27.0",
     "swagger-ui-express": "^4.0.5",
     "validator": "^11.0.0"
   },
@@ -39,6 +42,7 @@
     "mocha": "^7.1.1",
     "supertest": "^4.0.2",
     "ts-node": "^8.2.0",
+    "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
   }
