@@ -18,7 +18,6 @@ Required environment variables:
 * `GOOGLE_API_KEY`
 
 ```bash
-docker-compose up
 npm run dev
 ```
 
