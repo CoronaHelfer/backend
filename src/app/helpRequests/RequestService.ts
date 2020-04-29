@@ -61,7 +61,10 @@ class RequestService {
         });
       }
 
-      const confirmedHelperObject = await UserService.findOne({_id: request.confirmed_helper});
+      console.log(request);
+      const confirmedHelperObject = request.confirmed_helper
+      ? await UserService.findOne({_id: request.confirmed_helper})
+      : undefined;
 
       responseList.push({
         address: requests.address,
