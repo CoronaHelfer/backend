@@ -7,6 +7,6 @@ router.get('/me', UserController.me);
 router.delete('/', UserController.delete);
 router.get('/', UserController.getOtherUser);
 router.post('/fcmToken', UserController.saveFcmToken);
-router.patch('/me', UserController.changeProfileInformation);
+router.put('/me', UserController.changeProfileInformation);
 
 export default router;

@@ -112,13 +112,31 @@ class RequestService {
     return this.request;
   }
 
+  public async update(q, userId) {
+    console.log(q);
+    if (q.created_by.toString() !== userId) {
+      throw new Error('The request does not belong to you');
+    }
+
+    if (q.title === '' || q.description === '') {
+      throw new Error('Title and description are required');
+    }
+
+    this.request = await Request.updateOne({ _id: q._id }, { $set: {
+      title: q.title,
+      description: q.description,
+    } });
+
+    return this.request;
+  }
+
   public async deleteOwn(userId: string, requestId: string) {
     const request = await Request.findOne({_id: requestId});
     if (!request) {
       throw new Error('Request not found');
     }
     if (request.created_by.toString() !== userId) {
-      throw new Error('The request did not belongs to you');
+      throw new Error('The request does not belong to you');
     }
     request.delete();
     return {status: 'OK', message: 'Request gelöscht'};
@@ -130,7 +148,7 @@ class RequestService {
       throw new Error('Request not found');
     }
     if (request.created_by.toString() !== userId) {
-      throw new Error('The request did not belongs to you');
+      throw new Error('The request does not belong to you');
     }
     if (request.isFinished) {
       throw new Error('The Request is already finished');

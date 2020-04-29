@@ -10,6 +10,15 @@ class RequestController {
       .catch((err) => res.status(500).send({error: err.message}));
   }
 
+  public update(req, res) {
+    const body = req.body;
+
+    RequestService
+    .update(body, req.decoded._id)
+    .then((result) => res.status(200).send({result}))
+    .catch((err) => res.status(500).send({error: err.message}));
+  }
+
   public async find(req, res) {
     const query: any = {};
     let ownPosition: number[] = [];
