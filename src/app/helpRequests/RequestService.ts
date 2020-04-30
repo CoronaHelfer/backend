@@ -58,8 +58,12 @@ class RequestService {
           lastName: helperObject.lastName.slice(0, 1) + '.',
           picture: helperObject.picture ? helperObject.picture : '',
           offer_text: helper.offer_text,
+          contactPhone: helper.contactPhone,
+          contactEmail: helper.contactEmail,
         });
       }
+
+      const reversedHelperList = helperList.reverse();
 
       console.log(request);
       const confirmedHelperObject = request.confirmed_helper
@@ -73,7 +77,7 @@ class RequestService {
         description: request.description,
         category: await CategoryService.findOne({_id: request.category.toString()}),
         created_by: request.created_by,
-        helper: helperList,
+        helper: reversedHelperList,
         confirmed_helper: confirmedHelperObject ? {
           _id: confirmedHelperObject._id,
           firstName: confirmedHelperObject.firstName,

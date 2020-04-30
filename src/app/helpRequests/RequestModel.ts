@@ -85,6 +85,12 @@ class Request extends mongoose.Schema {
         offer_text: {
           type: String,
         },
+        contactEmail: {
+          type: String,
+        },
+        contactPhone: {
+          type: String,
+        },
       }],
     };
     const request = super(RequestSchema, {
