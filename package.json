@@ -6,7 +6,8 @@
   "scripts": {
     "dev:build": "tsc",
     "start": "npm run dev:build && node .build/server.js",
-    "geocodingServiceTest": "node .build/src/app/geocoding/GeocodingService.js",
+    "geocodingServiceTest": "node .build/app/geocoding/GeocodingService.js",
+    "mailSendTest": "node .build/app/nodemailer/mailService.js",
     "test": "mocha -r ts-node/register --resolveJsonModule ./src/test/**/*.spec.ts"
   },
   "keywords": [],
@@ -14,7 +15,10 @@
   "license": "ISC",
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^2.3.1",
-    "@types/node": "^12.0.3",
+    "@types/node": "^12.12.37",
+    "@types/nodemailer": "^6.4.0",
+    "@types/nodemailer-direct-transport": "^1.0.31",
+    "@types/nodemailer-smtp-transport": "^2.7.4",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
@@ -26,6 +30,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.11",
     "morgan": "^1.9.1",
+    "nodemailer": "^6.4.6",
     "path": "^0.12.7",
     "pdfkit": "^0.11.0",
     "swagger-ui-express": "^4.0.5",

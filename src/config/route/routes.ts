@@ -5,6 +5,7 @@ import FlyerRoute from '../../app/FlyerGenerator/FlyerRoute';
 import HelperRoute from '../../app/helper/HelperRoute';
 import RequestPrivateRoute from '../../app/helpRequests/RequestPrivateRoute';
 import RequestPublicRoute from '../../app/helpRequests/RequestPublicRoute';
+import VerificationRoute from '../../app/verification/VerificationRoute';
 
 const Routes = [
   {
@@ -40,6 +41,11 @@ const Routes = [
     guard: false,
     route: AuthRoute,
     url: 'auth',
+  },
+  {
+    guard: false,
+    route: VerificationRoute,
+    url: 'verify',
   },
 ];
 

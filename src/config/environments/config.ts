@@ -11,6 +11,8 @@ class Config {
   private GOOGLE_API_KEY: string;
   private DEFAULT_PROFILE_PICTURES: string[];
   private REQUEST_MAX_DISTANCE: number;
+  private SYSTEM_VALIDATION_MAIL: string;
+  private MAIL_TRANSPORT: string;
 
   constructor() {
     this.DB_COLLECTION = 'local';
@@ -31,6 +33,9 @@ class Config {
     this.FIREBASE_CLIENT_EMAIL = 'clientEmail';
     this.FIREBASE_PRIVATE_KEY = 'privateKey';
     this.FIREBASE_DATABASE_URL = 'datebaseUrl';
+
+    this.MAIL_TRANSPORT = process.env.MAIL_TRANSPORT;
+    this.SYSTEM_VALIDATION_MAIL = process.env.SYSTEM_VALIDATION_MAIL;
   }
 
 }

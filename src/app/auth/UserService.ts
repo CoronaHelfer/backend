@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 import Environment from '../../config/environments';
+import {MailService} from '../nodemailer/mailService';
+import VerificationKey from '../verification/VerificationKeyModel';
 import User from './UserModel';
 
 const config = Environment;
@@ -13,7 +15,7 @@ class UserService {
       verification: false,
       passwordHash: false,
     };
-    const user =  await User.findOne(q, projection);
+    const user = await User.findOne(q, projection);
     if (!user) {
       throw Error('User not found');
     }
@@ -27,6 +29,14 @@ class UserService {
     }
     user.passwordHash = user.createPasswordHash(q.password);
     this.user = await user.save();
+
+    if (user.email) {
+      const verificationKey = new VerificationKey({userId: user._id});
+      verificationKey.save();
+
+      console.log(await new MailService().sendVerificationMail(user.email, verificationKey.code));
+    }
+
     return this.generateJwt();
   }
 
