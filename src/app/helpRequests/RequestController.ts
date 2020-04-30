@@ -23,8 +23,15 @@ class RequestController {
     const query: any = {};
     let ownPosition: number[] = [];
 
-    if (req.query.zipcode) {
-      ownPosition = await GeocodingService.addressToCoordinate(req.query.zipcode);
+    if (req.query.address) {
+      ownPosition = await GeocodingService.addressToCoordinate(req.query.address);
+
+      if (!ownPosition) {
+        return res.status(400).send({
+          status: 400,
+          message: 'positionNotFound',
+        });
+      }
 
       // Compute radius using radians
       // Divide distance by Earth radius
