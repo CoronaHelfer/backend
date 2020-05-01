@@ -32,21 +32,23 @@ class UserService {
     user.passwordHash = user.createPasswordHash(body.password);
     this.user = await user.save();
 
-    if (user.email) {
-      const verificationKey = new VerificationKey({ userId: user._id });
+    let verificationKey = VerificationKey.findOne({ userId: user._id });
+
+    if (!verificationKey) {
+      verificationKey = new VerificationKey({ userId: user._id });
       verificationKey.save();
-
-      const mailResponse = await MailService.sendVerificationMail(
-        user.email,
-        verificationKey.code,
-        Environment.MAIL_TRANSPORTER,
-        Environment.MAIL_ADDRESS,
-        Environment.MAIL_ADDRESS_NAME,
-        refererHost,
-      );
-
-      console.log(mailResponse);
     }
+
+    const mailResponse = await MailService.sendVerificationMail(
+      user.email,
+      verificationKey.code,
+      Environment.MAIL_TRANSPORTER,
+      Environment.MAIL_ADDRESS,
+      Environment.MAIL_ADDRESS_NAME,
+      refererHost,
+    );
+
+    console.log(mailResponse);
 
     return this.generateJwt();
   }

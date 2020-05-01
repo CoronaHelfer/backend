@@ -15,6 +15,22 @@ class VerificationController {
       return res.status(500).send();
     }
   }
+
+  public async resendMail(req, res) {
+    try {
+      const result = await VerificationService.resendMail(req.decoded._id, req.headers.referer);
+
+      return res.status(200).send({ result });
+    } catch (error) {
+      console.log(error);
+
+      if (error.message === '404') {
+        return res.status(400).send();
+      }
+
+      return res.status(500).send();
+    }
+  }
 }
 
 export default new VerificationController();

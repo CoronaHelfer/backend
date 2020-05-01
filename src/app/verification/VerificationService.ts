@@ -1,4 +1,6 @@
+import Environment from '../../config/environments';
 import User from '../auth/UserModel';
+import { MailService } from '../nodemailer/mailService';
 import VerificationKey from './VerificationKeyModel';
 
 class VerificationService {
@@ -19,6 +21,34 @@ class VerificationService {
 
     user.verified = true;
     user.save();
+
+    return 'success';
+  }
+
+  public async resendMail(userId: string, refererHost: string) {
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      throw new Error('400');
+    }
+
+    let verificationKey = await VerificationKey.findOne({ userId });
+
+    if (!verificationKey) {
+      const newVerificationKey = new VerificationKey({ userId });
+      verificationKey = await newVerificationKey.save();
+    }
+
+    const mailResponse = await MailService.sendVerificationMail(
+      user.email,
+      verificationKey.code,
+      Environment.MAIL_TRANSPORTER,
+      Environment.MAIL_ADDRESS,
+      Environment.MAIL_ADDRESS_NAME,
+      refererHost,
+    );
+
+    console.log(mailResponse);
 
     return 'success';
   }

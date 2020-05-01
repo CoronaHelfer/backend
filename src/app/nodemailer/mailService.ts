@@ -19,7 +19,7 @@ export class MailService {
     const content = removeIndentation(`
       Hallo,
 
-      Bitte klick auf folgenden Link um deinen Account zu bestätigen: ${refererHost}verify?key=${key}
+      Bitte klick auf folgenden Link um deinen Account zu bestätigen: ${refererHost}#/verify?key=${key}
 
       Mit freundlichen Grüßen,
       Dein coronahelfer.eu Team
