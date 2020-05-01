@@ -1,3 +1,6 @@
+import * as nodemailer from 'nodemailer';
+import {MailService} from '../../app/nodemailer/mailService';
+
 class Config {
 
   protected JWT_SECRET: string;
@@ -17,6 +20,7 @@ class Config {
   private MAIL_AUTH_PASSWORD: string;
   private MAIL_ADDRESS: string;
   private MAIL_ADDRESS_NAME: string;
+  private MAIL_TRANSPORTER: nodemailer.Transporter;
 
   constructor() {
     this.DB_COLLECTION = 'local';
@@ -45,6 +49,9 @@ class Config {
     this.MAIL_AUTH_PASSWORD = process.env.MAIL_AUTH_PASSWORD;
     this.MAIL_ADDRESS = process.env.MAIL_ADDRESS || 'verification@coronahelfer.eu';
     this.MAIL_ADDRESS_NAME = process.env.MAIL_ADDRESS_NAME || 'Corona Helfer';
+
+    const mail = new MailService(this.MAIL_HOST, this.MAIL_PORT, this.MAIL_AUTH_USER, this.MAIL_AUTH_PASSWORD);
+    this.MAIL_TRANSPORTER = mail.transporter;
   }
 
 }

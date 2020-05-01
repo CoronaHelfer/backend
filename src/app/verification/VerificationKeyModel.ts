@@ -1,6 +1,4 @@
 import mongoose from 'mongoose';
-import {MailService} from '../nodemailer/mailService';
-import UserService from '../auth/UserService';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 

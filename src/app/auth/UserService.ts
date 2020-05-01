@@ -34,7 +34,9 @@ class UserService {
       const verificationKey = new VerificationKey({userId: user._id});
       verificationKey.save();
 
-      console.log(await new MailService().sendVerificationMail(user.email, verificationKey.code));
+      const mailResponse =
+        await MailService.sendVerificationMail(user.email, verificationKey.code, Environment.MAIL_TRANSPORTER);
+      console.log(mailResponse);
     }
 
     return this.generateJwt();
