@@ -1,4 +1,5 @@
 import Express from 'express';
+import {MailService} from './app/nodemailer/mailService';
 import DBConnection from './config/db/connection';
 import Environment from './config/environments';
 import ExpressMiddleware from './config/express-middleware';
