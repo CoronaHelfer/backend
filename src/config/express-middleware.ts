@@ -53,7 +53,7 @@ class ExpressMiddlerware {
         const user = await User.findOne({ _id: firstDecode._id });
 
         if (!user) {
-          console.log('User not found');
+          console.log('User was not found');
           return res.status(403).send(errorMsg);
         }
 
