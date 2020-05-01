@@ -1,14 +1,5 @@
 import * as nodemailer from 'nodemailer';
-
-/**
- * Environment Configuration
- * host
- * port
- * auth_user
- * auth_pass
- * from_name
- * from_address
- */
+import Environment from '../../config/environments';
 
 export class MailService {
 
@@ -16,13 +7,13 @@ export class MailService {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.office365.com', // todo config
-      port: 587,
+      host: Environment.MAIL_HOST,
+      port: Environment.MAIL_PORT,
       secure: false,
       requireTLS: true,
       auth: {
-        user: 'verification@coronahelfer.eu', // todo config
-        pass: '%rGPHPB6RtCG9oHunAeN', // todo config
+        user: Environment.MAIL_AUTH_USER,
+        pass: Environment.MAIL_AUTH_PASSWORD,
       },
       tls: {
         ciphers: 'SSLv3',
@@ -45,8 +36,8 @@ export class MailService {
 
     const options = {
       from: {
-        name: 'Corona Helfer', // todo config
-        address: 'verification@coronahelfer.eu', // todo config
+        name: Environment.MAIL_ADDRESS_NAME,
+        address: Environment.MAIL_ADDRESS || Environment.MAIL_AUTH_USER,
       },
       to,
       subject,

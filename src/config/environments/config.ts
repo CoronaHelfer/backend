@@ -38,9 +38,10 @@ class Config {
     this.FIREBASE_PRIVATE_KEY = 'privateKey';
     this.FIREBASE_DATABASE_URL = 'datebaseUrl';
 
+    // Mail Server Config
     this.MAIL_HOST = process.env.MAIL_HOST || 'smtp.office365.com';
     this.MAIL_PORT = Number(process.env.MAIL_PORT) || 587;
-    this.MAIL_AUTH_USER = process.env.MAIL_AUTH_USER;
+    this.MAIL_AUTH_USER = process.env.MAIL_AUTH_USER || 'verification@coronahelfer.eu';
     this.MAIL_AUTH_PASSWORD = process.env.MAIL_AUTH_PASSWORD;
     this.MAIL_ADDRESS = process.env.MAIL_ADDRESS || 'verification@coronahelfer.eu';
     this.MAIL_ADDRESS_NAME = process.env.MAIL_ADDRESS_NAME || 'Corona Helfer';
