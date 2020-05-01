@@ -46,6 +46,24 @@ class User extends mongoose.Schema {
           return config.DEFAULT_PROFILE_PICTURES[Math.floor(Math.random() * 4)];
         },
       },
+      address: {
+        plz: {
+          type: String,
+          required: false,
+        },
+        city: {
+          type: String,
+          required: false,
+        },
+        street: {
+          type: String,
+          required: false,
+        },
+        street_nr: {
+          type: String,
+          required: false,
+        },
+      },
       verified: {
         type: Boolean,
         default: false,

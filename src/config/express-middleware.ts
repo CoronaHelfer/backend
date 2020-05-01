@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import UserService from '../app/auth/UserService';
+import User from '../app/auth/UserModel';
 import Logger from './logger';
 import Route from './route/route.index';
 import Routes from './route/routes';
@@ -33,7 +33,10 @@ class ExpressMiddlerware {
           res.status(403).send(errorMsg).end();
         } else {
           const firstDecode = jwt.decode(token);
-          UserService.findOne({_id: firstDecode._id}).then((user) => {
+          if (!firstDecode) {
+            res.status(403).send();
+          }
+          User.findOne({_id: firstDecode._id}).then((user) => {
             jwt.verify(token, `${user.jwtSecret}${this.config.JWT_SECRET}`, (err, decoded) => {
               req.decoded = decoded;
               if (err) {
@@ -43,6 +46,8 @@ class ExpressMiddlerware {
                 next();
               }
             });
+          }).catch((err) => {
+            res.status(403).send({error: err.message});
           });
         }
       } else {

@@ -1,3 +1,4 @@
+import User from '../auth/UserModel';
 import Request from '../helpRequests/RequestModel';
 import NotificationService from '../notification/NotificationService';
 
@@ -13,9 +14,15 @@ class HelperService {
       throw new Error('You already offered help for this request');
     }
 
+    const user = await User.findOne({ _id: userId });
+
     const payload = {
       helperId: userId,
       offer_text: body.offerText,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      contactPhone: user.phoneNumber,
+      contactEmail: user.email,
     };
 
     request.helper.push(payload);

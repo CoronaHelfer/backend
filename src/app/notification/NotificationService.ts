@@ -1,5 +1,5 @@
-import UserService from '../auth/UserService';
 import Environment from '../../config/environments';
+import UserService from '../auth/UserService';
 
 const config = Environment;
 

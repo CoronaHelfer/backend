@@ -57,6 +57,10 @@ class Request extends mongoose.Schema {
           required: false,
         },
       },
+      time_start: {
+        type: Date,
+        required: false,
+      },
       time_end: {
         type: Date,
         required: false,
@@ -79,6 +83,12 @@ class Request extends mongoose.Schema {
           ref: 'User',
         },
         offer_text: {
+          type: String,
+        },
+        contactEmail: {
+          type: String,
+        },
+        contactPhone: {
           type: String,
         },
       }],

@@ -1,6 +1,5 @@
 import Express from 'express';
-import {MailService} from './app/nodemailer/mailService';
-import DBConnection from './config/db/connection';
+import connectDatabase from './config/db/connection';
 import Environment from './config/environments';
 import ExpressMiddleware from './config/express-middleware';
 
@@ -16,7 +15,8 @@ class Server {
 
   constructor() {
     this.app = Express();
-    this.db = new DBConnection();
+    this.db = connectDatabase();
+
     this.config = Environment;
     ExpressMiddleware.init(this.app, this.config);
     this.main();

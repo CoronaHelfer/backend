@@ -1,19 +1,31 @@
-import {defaultUserData, expect, loginWithDefaultUser, registerDefaultUser, request, should} from './shared.spec';
+import {
+  defaultUserData,
+  expect,
+  loginWithDefaultUser,
+  registerDefaultUser,
+  request,
+  should,
+} from './shared.spec';
 
 let jwtToken;
+
 describe('# Project Auth APIs', () => {
   it('User should able to register', (done) => {
     registerDefaultUser()
       .then(() => done())
       .catch((err) => done(err));
   });
+
   it('User should able to login', (done) => {
     loginWithDefaultUser()
       .then((res) => {
         jwtToken = res.body.token;
         done();
       })
-      .catch((err) => done(err));
+      .catch((err) => {
+        console.log(err);
+        done(err);
+      });
   });
 
   it('User Should not get users list', (done) => {
@@ -29,7 +41,7 @@ describe('# Project Auth APIs', () => {
 
   it('User Should get users list', (done) => {
     request.get(process.env.API_BASE + '/users')
-      .set('x-access-token', jwtToken)
+      .set('Authorization', `Bearer ${jwtToken}`)
       .expect(200)
       .expect((res) => {
         should.exist(res.body);

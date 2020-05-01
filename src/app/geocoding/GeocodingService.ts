@@ -1,25 +1,40 @@
-import {Client} from '@googlemaps/google-maps-services-js';
+import { Client } from '@googlemaps/google-maps-services-js';
 import Environment from '../../config/environments';
 
-const client = new Client({});
+const GoogleMapsClient = new Client();
 
-class GeocodingService {
+const GeocodingService = {
+  async addressToCoordinate(
+    zipcode: number,
+    street?: string,
+    city?: string,
+    streetNr?: string,
+  ): Promise<number[]> {
+    try {
+      const response = await GoogleMapsClient.geocode({
+        params: {
+          address: (street || '') + ' ' + (streetNr || '') + ' ' + (zipcode || '') + ' ' + (city || ''),
+          key: Environment.GOOGLE_API_KEY,
+        },
+      });
 
-  public static async addressToCoordinate(plz: number, street: string, city: string, streetNr: string)
-    : Promise<number[]> {
-    const geocode = await client.geocode({
-      params: {
-        address: (street || '') + ' ' + (streetNr || '') + ' ' + plz + ' ' + (city || ''),
-        key: Environment.GOOGLE_API_KEY,
-      },
-    });
-    if (!geocode.data.results.length) {
-      throw new Error('Google API fail');
+      if (response.data.status !== 'OK') {
+        console.error('Geocoding request failed with status:', response.data.status);
+        return null;
+      }
+
+      const coordinates = [
+        response.data.results[0].geometry.location.lng,
+        response.data.results[0].geometry.location.lat,
+      ];
+
+      return coordinates;
+    } catch (error) {
+      console.error('Unexpected Geocoding Failure', error);
     }
-    return [geocode.data.results[0].geometry.location.lng, geocode.data.results[0].geometry.location.lat];
-  }
+  },
 
-  public static distanceBetweenTwoCoordinates(lat1, lon1, lat2, lon2): number {
+  distanceBetweenTwoCoordinates(lat1, lon1, lat2, lon2): number {
     const quatorialEarthRadius = 6378.1370;
     const d2r = (Math.PI / 180.0);
     const dlong = (lon2 - lon1) * d2r;
