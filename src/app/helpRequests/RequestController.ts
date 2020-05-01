@@ -1,11 +1,7 @@
-import Environment from '../../config/environments';
 import GeocodingService from '../geocoding/GeocodingService';
 import RequestService from './RequestService';
 
-const config = Environment;
-
 class RequestController {
-
   public create(req, res) {
     const body = req.body;
 
@@ -14,53 +10,53 @@ class RequestController {
       .catch((err) => res.status(500).send({error: err.message}));
   }
 
+  public update(req, res) {
+    const body = req.body;
+
+    RequestService
+    .update(body, req.decoded._id)
+    .then((result) => res.status(200).send({result}))
+    .catch((err) => res.status(500).send({error: err.message}));
+  }
+
   public async find(req, res) {
-    let ownPosition: number[];
-    const address = {
-      plz: req.body['address.plz'],
-      city: req.body['address.city'],
-      street: req.body['address.street'],
-      street_nr: req.body['address.street_nr'],
-    };
-    const position = req.body.position;
-    if (address.plz || (position && position[0] && position[1])) {
-      if (position && position[0] && position[1]) {
-        ownPosition = position;
-      } else {
-        ownPosition = await GeocodingService.addressToCoordinate(address.plz, address.street,
-          address.city, address.street_nr);
+    const query: any = {};
+    let ownPosition: number[] = [];
+
+    if (req.query.address) {
+      ownPosition = await GeocodingService.addressToCoordinate(req.query.address);
+
+      if (!ownPosition) {
+        return res.status(400).send({
+          status: 400,
+          message: 'positionNotFound',
+        });
+      }
+
+      // Compute radius using radians
+      // Divide distance by Earth radius
+      // Earth Radius = 6378 km
+      const radius = req.query.distance / 6378;
+
+      if (ownPosition) {
+        query['address.location'] = {
+          $geoWithin: {
+            $centerSphere: [
+              ownPosition,
+              radius || 10,
+            ],
+          },
+        };
       }
     }
 
-    if (!ownPosition.length) {
-      // testing purposes
-      ownPosition = [8.4821159, 49.4705199];
+    if (req.query.categoryIds) {
+      query.category = {
+        $in: req.query.categoryIds.split(','),
+      };
     }
 
-    if (!ownPosition.length) {
-      res.status(500).send({error: 'no position'});
-      return;
-    }
-
-    const query = [];
-    if (req.body.category) {
-      query.push({category: {$in: req.body.category}});
-    }
-
-    query.push({
-      'address.location': {
-        $near: {
-          $geometry: {
-            type: 'Point',
-            coordinates: ownPosition,
-          },
-          $maxDistance: config.REQUEST_MAX_DISTANCE,
-          $minDistance: 0,
-        },
-      },
-    });
-
-    RequestService.find({$and: query}, null, ownPosition)
+    RequestService.find(query, null, ownPosition)
       .then((result) => res.status(200).send({result}))
       .catch((err) => res.status(500).send({error: err.message}));
   }
@@ -71,23 +67,14 @@ class RequestController {
       .catch((err) => res.status(500).send({error: err.message}));
   }
 
-  public getListOfOwnHelps(req, res) {
-    const userId = req.decoded._id;
-    RequestService.find({'helper.helperId': userId}, userId)
+  public deleteOwn(req, res) {
+    RequestService.deleteOwn(req.decoded._id, req.body.requestId)
       .then((result) => res.status(200).send({result}))
       .catch((err) => res.status(500).send({error: err.message}));
   }
 
-  public offerHelp(req, res) {
-    const body = req.body;
-    RequestService.addHelper(body, req.decoded._id)
-      .then((result) => res.status(200).send({result}))
-      .catch((err) => res.status(500).send({error: err.message}));
-  }
-
-  public confirmHelp(req, res) {
-    const body = req.body;
-    RequestService.confirmHelper(body.helperId, req.decoded._id, body.requestId)
+  public finish(req, res) {
+    RequestService.finish(req.decoded._id, req.body.requestId)
       .then((result) => res.status(200).send({result}))
       .catch((err) => res.status(500).send({error: err.message}));
   }

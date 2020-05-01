@@ -4,9 +4,9 @@ import RequestController from './RequestController';
 const router = Router();
 
 router.post('/', RequestController.create);
+router.put('/', RequestController.update);
 router.get('/', RequestController.getOwn);
-router.post('/helper', RequestController.offerHelp);
-router.put('/helper', RequestController.confirmHelp);
-router.get('/helper', RequestController.getListOfOwnHelps);
+router.delete('/', RequestController.deleteOwn);
+router.put('/finish', RequestController.finish);
 
 export default router;

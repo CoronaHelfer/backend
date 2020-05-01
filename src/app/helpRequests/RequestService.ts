@@ -1,6 +1,6 @@
 import UserService from '../auth/UserService';
+import CategoryService from '../category/CategoryService';
 import GeocodingService from '../geocoding/GeocodingService';
-import CategoryService from './category/CategoryService';
 import Request from './RequestModel';
 
 class RequestService {
@@ -28,6 +28,7 @@ class RequestService {
         },
         confirmed_helper: request.confirmed_helper,
         created_at: request.created_at,
+        time_start: request.time_start,
         time_end: request.time_end,
       };
 
@@ -57,10 +58,17 @@ class RequestService {
           lastName: helperObject.lastName.slice(0, 1) + '.',
           picture: helperObject.picture ? helperObject.picture : '',
           offer_text: helper.offer_text,
+          contactPhone: helper.contactPhone,
+          contactEmail: helper.contactEmail,
         });
       }
 
-      const confirmedHelperObject = await UserService.findOne({_id: request.confirmed_helper});
+      const reversedHelperList = helperList.reverse();
+
+      console.log(request);
+      const confirmedHelperObject = request.confirmed_helper
+      ? await UserService.findOne({_id: request.confirmed_helper})
+      : undefined;
 
       responseList.push({
         address: requests.address,
@@ -69,7 +77,7 @@ class RequestService {
         description: request.description,
         category: await CategoryService.findOne({_id: request.category.toString()}),
         created_by: request.created_by,
-        helper: helperList,
+        helper: reversedHelperList,
         confirmed_helper: confirmedHelperObject ? {
           _id: confirmedHelperObject._id,
           firstName: confirmedHelperObject.firstName,
@@ -78,7 +86,7 @@ class RequestService {
           offer_text: confirmedHelperObject.offer_text,
         } : null,
         created_at: request.created_at,
-        time_end: request.time_end,
+        time_start: request.time_start,
       });
     }
 
@@ -108,41 +116,52 @@ class RequestService {
     return this.request;
   }
 
-  public async addHelper(body, userId: string) {
-    const request = await Request.findOne({_id: body.requestId});
-
-    if (request.created_by === userId) {
-      throw new Error('You cant offer help to yourself');
+  public async update(q, userId) {
+    console.log(q);
+    if (q.created_by.toString() !== userId) {
+      throw new Error('The request does not belong to you');
     }
 
-    if (request.helper.find((element) => element.helperId > userId)) {
-      throw new Error('You already offered help for this request');
+    if (q.title === '' || q.description === '') {
+      throw new Error('Title and description are required');
     }
 
-    const payload = {
-      helperId: userId,
-      offer_text: body.offerText,
-    };
+    this.request = await Request.updateOne({ _id: q._id }, { $set: {
+      title: q.title,
+      description: q.description,
+    } });
 
-    request.helper.push(payload);
-    request.save();
-    return {status: 'OK', message: 'Hilfe angeboten'};
+    return this.request;
   }
 
-  public async confirmHelper(helperId: string, userId: string, requestId: string) {
+  public async deleteOwn(userId: string, requestId: string) {
     const request = await Request.findOne({_id: requestId});
+    if (!request) {
+      throw new Error('Request not found');
+    }
     if (request.created_by.toString() !== userId) {
-      throw new Error('The request did not belongs to you');
+      throw new Error('The request does not belong to you');
     }
-    if (request.confirmed_helper) {
-      throw new Error('You already confirmed a user');
+    request.delete();
+    return {status: 'OK', message: 'Request gelöscht'};
+  }
+
+  public async finish(userId: string, requestId: string) {
+    const request = await Request.findOne({_id: requestId});
+    if (!request) {
+      throw new Error('Request not found');
     }
-    if (!request.helper.find((element) => element.helperId.toString() === helperId)) {
-      throw new Error('The helper did not exist');
+    if (request.created_by.toString() !== userId) {
+      throw new Error('The request does not belong to you');
     }
-    request.confirmed_helper = helperId;
+    if (request.isFinished) {
+      throw new Error('The Request is already finished');
+    }
+
+    request.isFinished = true;
     request.save();
-    return {status: 'OK', message: 'Helfer bestätigt'};
+
+    return {status: 'OK', message: 'Request finished'};
   }
 }
 

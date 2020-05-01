@@ -3,6 +3,6 @@ import RequestController from './RequestController';
 
 const router = Router();
 
-router.post('/', RequestController.find);
+router.get('/', RequestController.find);
 
 export default router;
