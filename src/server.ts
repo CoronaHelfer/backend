@@ -13,7 +13,6 @@ class Server {
   public app: Express.Application;
   protected config: any;
   private db;
-  private mail;
 
   constructor() {
     this.app = Express();

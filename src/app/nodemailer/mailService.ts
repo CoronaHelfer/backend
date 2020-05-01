@@ -3,15 +3,15 @@ import Environment from '../../config/environments';
 
 export class MailService {
 
-  public static async sendVerificationMail(to: string, key: string, transporter: nodemailer.Transporter)
-    : Promise<void> {
+  public static async sendVerificationMail(to: string, key: string, transporter: nodemailer.Transporter,
+                                           address: string, name: string): Promise<void> {
     const subject = 'Corona-Helfer E-Mail Verification';
     const content = `Bitte bestätige deinen Account: ${key}`;
 
     const options = {
       from: {
-        name: Environment.MAIL_ADDRESS_NAME,
-        address: Environment.MAIL_ADDRESS || Environment.MAIL_AUTH_USER,
+        name,
+        address,
       },
       to,
       subject,
@@ -27,7 +27,7 @@ export class MailService {
               console.log(`error: ${error}`);
               reject(error);
             } else {
-              resolve(`Message Sent ${info.response}`);
+              resolve(`Verification message sent to: ${to}\n${info.response}`);
             }
           });
       });

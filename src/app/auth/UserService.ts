@@ -12,7 +12,6 @@ class UserService {
   public async findOne(q) {
     const projection = {
       __v: false,
-      verification: false,
       passwordHash: false,
     };
     const user = await User.findOne(q, projection);
@@ -34,8 +33,8 @@ class UserService {
       const verificationKey = new VerificationKey({userId: user._id});
       verificationKey.save();
 
-      const mailResponse =
-        await MailService.sendVerificationMail(user.email, verificationKey.code, Environment.MAIL_TRANSPORTER);
+      const mailResponse = await MailService.sendVerificationMail(user.email, verificationKey.code,
+        Environment.MAIL_TRANSPORTER, Environment.MAIL_ADDRESS, Environment.MAIL_ADDRESS_NAME);
       console.log(mailResponse);
     }
 

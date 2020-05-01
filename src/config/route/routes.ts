@@ -43,7 +43,7 @@ const Routes = [
     url: 'auth',
   },
   {
-    guard: false,
+    guard: true,
     route: VerificationRoute,
     url: 'verify',
   },
