@@ -6,5 +6,10 @@ services:
       - 27097:27017
     volumes:
       - mongoStore:/data/db
+  maildev:
+    image: djfarrelly/maildev
+    ports:
+      - "5078:80"
+      - "5025:25"
 volumes:
   mongoStore:

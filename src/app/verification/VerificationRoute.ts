@@ -3,6 +3,6 @@ import VerificationController from './VerificationController';
 
 const router = Router();
 
-router.post('/', VerificationController.verifyMail);
+router.get('/', VerificationController.verifyMail);
 
 export default router;

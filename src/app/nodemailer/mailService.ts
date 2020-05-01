@@ -1,12 +1,29 @@
 import * as nodemailer from 'nodemailer';
-import Environment from '../../config/environments';
+
+const removeIndentation = (template) => {
+  return template.trim().replace(/(\n\n?)(\s+)/g, '$1');
+};
 
 export class MailService {
 
-  public static async sendVerificationMail(to: string, key: string, transporter: nodemailer.Transporter,
-                                           address: string, name: string): Promise<void> {
+  public static async sendVerificationMail(
+    to: string,
+    key: string,
+    transporter: nodemailer.Transporter,
+    address: string,
+    name: string,
+    refererHost: string,
+  ): Promise<void> {
     const subject = 'Corona-Helfer E-Mail Verification';
-    const content = `Bitte bestätige deinen Account: ${key}`;
+
+    const content = removeIndentation(`
+      Hallo,
+
+      Bitte klick auf folgenden Link um deinen Account zu bestätigen: ${refererHost}verify?key=${key}
+
+      Mit freundlichen Grüßen,
+      Dein coronahelfer.eu Team
+    `);
 
     const options = {
       from: {
@@ -36,32 +53,36 @@ export class MailService {
   public transporter: nodemailer.Transporter;
 
   constructor(host, port, user, pass) {
-    this.transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure: false,
-      requireTLS: true,
-      auth: {
-        user,
-        pass,
-      },
-      tls: {
-        ciphers: 'SSLv3',
-      },
-    });
+    let options;
 
-    this.transporter.verify((error, success) => {
+    if (process.env.LOCAL_ENV) {
+      options = {
+        host: '127.0.0.1',
+        port: 5025,
+        ignoreTLS: true,
+      };
+    } else {
+      options = {
+        host,
+        port,
+        secure: false,
+        requireTLS: true,
+        auth: {
+          user,
+          pass,
+        },
+        tls: {
+          ciphers: 'SSLv3',
+        },
+      };
+    }
+
+    this.transporter = nodemailer.createTransport(options);
+
+    this.transporter.verify((error) => {
       if (error) {
         console.log(error);
       }
     });
   }
 }
-
-// const mailService = new MailService();
-// mailService.sendVerificationMail(
-//   'sapzalp@gmail.com',
-//   '12342214523',
-// ).then((msg) => {
-//   console.log(`sendMail result :(${msg})`);
-// });

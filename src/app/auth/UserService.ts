@@ -22,20 +22,29 @@ class UserService {
     return user;
   }
 
-  public async create(q) {
-    const user = new User(q);
+  public async create(body, refererHost) {
+    const user = new User(body);
+
     if (!user.phoneNumber && !user.email) {
       throw new Error('400');
     }
-    user.passwordHash = user.createPasswordHash(q.password);
+
+    user.passwordHash = user.createPasswordHash(body.password);
     this.user = await user.save();
 
     if (user.email) {
-      const verificationKey = new VerificationKey({userId: user._id});
+      const verificationKey = new VerificationKey({ userId: user._id });
       verificationKey.save();
 
-      const mailResponse = await MailService.sendVerificationMail(user.email, verificationKey.code,
-        Environment.MAIL_TRANSPORTER, Environment.MAIL_ADDRESS, Environment.MAIL_ADDRESS_NAME);
+      const mailResponse = await MailService.sendVerificationMail(
+        user.email,
+        verificationKey.code,
+        Environment.MAIL_TRANSPORTER,
+        Environment.MAIL_ADDRESS,
+        Environment.MAIL_ADDRESS_NAME,
+        refererHost,
+      );
+
       console.log(mailResponse);
     }
 
@@ -83,13 +92,7 @@ class UserService {
     const secret = `${this.user.jwtSecret}${config.JWT_SECRET}`;
     const expiresIn = 86400; // 24h
 
-    const payload = {
-      _id: this.user._id,
-      email: this.user.email,
-      fullName: this.user.fullName,
-    };
-
-    return jwt.sign(payload, secret, {expiresIn});
+    return jwt.sign({ _id: this.user._id }, secret, { expiresIn });
   }
 
   public async findOneWithProjection(q, projection) {

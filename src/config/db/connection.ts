@@ -14,7 +14,7 @@ let ca;
 let connectionString;
 let options;
 
-if (process.env.LOCAL_DB) {
+if (process.env.LOCAL_ENV) {
   connectionString = 'mongodb://localhost:27097';
 
   options = {

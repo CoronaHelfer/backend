@@ -21,9 +21,10 @@ class UserController {
   }
 
   public register(req, res) {
-    UserService.create(req.body)
+    UserService.create(req.body, req.headers.referer)
     .then((result) => res.status(201).send({token: result}))
     .catch((error) => {
+      console.log(error);
 
       if (error.message === '400') {
         return res.status(400).send({ message: 'No email address or phone number provided' });
