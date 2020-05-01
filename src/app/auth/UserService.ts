@@ -32,11 +32,11 @@ class UserService {
     user.passwordHash = user.createPasswordHash(body.password);
     this.user = await user.save();
 
-    let verificationKey = VerificationKey.findOne({ userId: user._id });
+    let verificationKey = await VerificationKey.findOne({ userId: user._id });
 
     if (!verificationKey) {
-      verificationKey = new VerificationKey({ userId: user._id });
-      verificationKey.save();
+      const newVerificationKey = new VerificationKey({ userId: user._id });
+      verificationKey = await newVerificationKey.save();
     }
 
     const mailResponse = await MailService.sendVerificationMail(
