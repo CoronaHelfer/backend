@@ -11,8 +11,12 @@ class Config {
   private GOOGLE_API_KEY: string;
   private DEFAULT_PROFILE_PICTURES: string[];
   private REQUEST_MAX_DISTANCE: number;
-  private SYSTEM_VALIDATION_MAIL: string;
-  private MAIL_TRANSPORT: string;
+  private MAIL_HOST: string;
+  private MAIL_PORT: number;
+  private MAIL_AUTH_USER: string;
+  private MAIL_AUTH_PASSWORD: string;
+  private MAIL_ADDRESS: string;
+  private MAIL_ADDRESS_NAME: string;
 
   constructor() {
     this.DB_COLLECTION = 'local';
@@ -34,8 +38,12 @@ class Config {
     this.FIREBASE_PRIVATE_KEY = 'privateKey';
     this.FIREBASE_DATABASE_URL = 'datebaseUrl';
 
-    this.MAIL_TRANSPORT = process.env.MAIL_TRANSPORT;
-    this.SYSTEM_VALIDATION_MAIL = process.env.SYSTEM_VALIDATION_MAIL;
+    this.MAIL_HOST = process.env.MAIL_HOST || 'smtp.office365.com';
+    this.MAIL_PORT = Number(process.env.MAIL_PORT) || 587;
+    this.MAIL_AUTH_USER = process.env.MAIL_AUTH_USER;
+    this.MAIL_AUTH_PASSWORD = process.env.MAIL_AUTH_PASSWORD;
+    this.MAIL_ADDRESS = process.env.MAIL_ADDRESS || 'verification@coronahelfer.eu';
+    this.MAIL_ADDRESS_NAME = process.env.MAIL_ADDRESS_NAME || 'Corona Helfer';
   }
 
 }
