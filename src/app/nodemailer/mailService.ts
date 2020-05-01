@@ -6,7 +6,7 @@ export class MailService {
   public static async sendVerificationMail(to: string, key: string, transporter: nodemailer.Transporter,
                                            address: string, name: string): Promise<void> {
     const subject = 'Corona-Helfer E-Mail Verification';
-    const content = `Bitte bestätige deinen Account: ${key}`;
+    const content = `Bitte bestätige deine E-Mail Adresse mit folgendem Code: ${key}\nPlease verify your email with the following code: ${key}\n\nhttp://coronahelfer.eu/#/verify?key=${key}`;
 
     const options = {
       from: {
