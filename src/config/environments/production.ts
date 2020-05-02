@@ -3,7 +3,7 @@ import Config from './config';
 class Production extends Config {
   constructor() {
     super();
-    this.DB_COLLECTION = 'coronahelfer';
+    this.DB_NAME = 'coronahelfer';
   }
 
   public prodConfig() {

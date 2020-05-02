@@ -1,11 +1,8 @@
 import bcryptjs from 'bcryptjs';
 import mongoose from 'mongoose';
-import {isEmail} from 'validator';
+import { isEmail } from 'validator';
 
-import Environment from '../../config/environments';
-import {UserMiddleware} from './UserMiddleware';
-
-const config = Environment;
+import { UserMiddleware } from './UserMiddleware';
 
 class User extends mongoose.Schema {
   public user: mongoose.Schema;
@@ -42,9 +39,6 @@ class User extends mongoose.Schema {
       },
       picture: {
         type: String,
-        default: () => {
-          return config.DEFAULT_PROFILE_PICTURES[Math.floor(Math.random() * 4)];
-        },
       },
       address: {
         plz: {
@@ -79,25 +73,31 @@ class User extends mongoose.Schema {
         },
       },
     };
+
     const user = super(UserSchema, {
       timestamps: {
         createdAt: 'created_at',
         updatedAt: 'updated_at',
       },
     });
+
     this.user = user;
+
     this.user.plugin(UserMiddleware);
+
     const validatePassword = (password, passwordHash) => {
       return bcryptjs.compareSync(password, passwordHash);
     };
+
     const createPasswordHash = (password) => {
       return bcryptjs.hashSync(password, 10);
     };
+
     this.user.methods.validatePassword = validatePassword;
     this.user.methods.createPasswordHash = createPasswordHash;
+
     return this.user;
   }
-
 }
 
 export default mongoose.model('User', new User());

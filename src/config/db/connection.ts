@@ -44,7 +44,7 @@ if (process.env.LOCAL_ENV) {
     ? [Buffer.from(process.env.DB_CERT, 'base64')]
     : [Buffer.from(binding.connection.mongodb.certificate.certificate_base64, 'base64')];
 
-  connectionString = `mongodb://${username}:${password}@${hostname}:${port},host-2:32470/${config.DB_COLLECTION}?authSource=admin&replicaSet=replset&ssl=true`;
+  connectionString = `mongodb://${username}:${password}@${hostname}:${port},host-2:32470/${config.DB_NAME}?authSource=admin&replicaSet=replset&ssl=true`;
 
   options = {
     ssl: true,

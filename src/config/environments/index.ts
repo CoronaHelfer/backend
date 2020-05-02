@@ -13,6 +13,7 @@ class Environment {
 
   constructor() {
     dotenv.config();
+
     switch (ENV) {
       case 'production':
         this.configENV = Production;
@@ -23,6 +24,7 @@ class Environment {
       default:
         this.configENV = Developemnt;
     }
+
     this.configVal = this.configENV;
   }
 
