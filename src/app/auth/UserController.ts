@@ -21,7 +21,7 @@ class UserController {
   }
 
   public register(req, res) {
-    UserService.create(req.body, req.headers.referer)
+    UserService.create(req.body, req.headers.origin)
     .then((result) => res.status(201).send({token: result}))
     .catch((error) => {
       console.log(error);

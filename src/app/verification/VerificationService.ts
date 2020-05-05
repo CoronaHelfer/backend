@@ -25,7 +25,7 @@ class VerificationService {
     return 'success';
   }
 
-  public async resendMail(userId: string, refererHost: string) {
+  public async resendMail(userId: string, originHost: string) {
     const user = await User.findOne({ _id: userId });
 
     if (!user) {
@@ -45,7 +45,7 @@ class VerificationService {
       Environment.MAIL_TRANSPORTER,
       Environment.MAIL_ADDRESS,
       Environment.MAIL_ADDRESS_NAME,
-      refererHost,
+      originHost,
     );
 
     console.log(mailResponse);

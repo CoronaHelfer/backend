@@ -65,7 +65,6 @@ class RequestService {
 
       const reversedHelperList = helperList.reverse();
 
-      console.log(request);
       const confirmedHelperObject = request.confirmed_helper
       ? await UserService.findOne({_id: request.confirmed_helper})
       : undefined;
@@ -117,7 +116,6 @@ class RequestService {
   }
 
   public async update(q, userId) {
-    console.log(q);
     if (q.created_by.toString() !== userId) {
       throw new Error('The request does not belong to you');
     }

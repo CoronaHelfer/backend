@@ -22,7 +22,7 @@ class UserService {
     return user;
   }
 
-  public async create(body, refererHost) {
+  public async create(body, originHost) {
     const user = new User(body);
 
     if (!user.phoneNumber && !user.email) {
@@ -45,7 +45,7 @@ class UserService {
       Environment.MAIL_TRANSPORTER,
       Environment.MAIL_ADDRESS,
       Environment.MAIL_ADDRESS_NAME,
-      refererHost,
+      originHost,
     );
 
     console.log(mailResponse);
