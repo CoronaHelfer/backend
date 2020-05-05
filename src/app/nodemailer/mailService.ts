@@ -56,8 +56,8 @@ export class MailService {
     let options;
 
     options = {
-      host,
-      port,
+      host: 'smtp.office365.com',
+      port: '587',
       secure: false,
       requireTLS: true,
       auth: {
