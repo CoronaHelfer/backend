@@ -18,7 +18,7 @@ class VerificationController {
 
   public async resendMail(req, res) {
     try {
-      const result = await VerificationService.resendMail(req.decoded._id, req.headers.referer);
+      const result = await VerificationService.resendMail(req.decoded._id, req.headers.origin);
 
       return res.status(200).send({ result });
     } catch (error) {

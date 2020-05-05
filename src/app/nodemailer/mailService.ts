@@ -12,14 +12,14 @@ export class MailService {
     transporter: nodemailer.Transporter,
     address: string,
     name: string,
-    refererHost: string,
+    originHost: string,
   ): Promise<void> {
     const subject = 'Corona-Helfer E-Mail Verification';
 
     const content = removeIndentation(`
       Hallo,
 
-      Bitte klick auf folgenden Link um deinen Account zu bestätigen: ${refererHost}#/verify?key=${key}
+      Bitte klick auf folgenden Link um deinen Account zu bestätigen: ${originHost}/verify?key=${key}
 
       Mit freundlichen Grüßen,
       Dein coronahelfer.eu Team
