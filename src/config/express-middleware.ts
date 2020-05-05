@@ -51,12 +51,15 @@ class ExpressMiddlerware {
 
       try {
         const user = await User.findOne({ _id: firstDecode._id });
+        console.log(user);
 
         if (!user) {
           console.log('User was not found');
           return res.status(403).send(errorMsg);
         }
 
+        console.log('userjwtSalt', user.jwtSecret)
+        console.log('configjwtSalt', this.config.JWT_SECRET)
         const payload = await promisifiedVerify(token, `${user.jwtSecret}${this.config.JWT_SECRET}`);
 
         req.decoded = payload;

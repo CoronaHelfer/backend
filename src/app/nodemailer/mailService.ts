@@ -55,19 +55,27 @@ export class MailService {
   constructor(host, port, user, pass) {
     let options;
 
-    options = {
-      host: 'smtp.office365.com',
-      port: '587',
-      secure: false,
-      requireTLS: true,
-      auth: {
-        user,
-        pass,
-      },
-      tls: {
-        ciphers: 'SSLv3',
-      },
-    };
+    if (process.env.LOCAL_ENV) {
+      options = {
+        host: '127.0.0.1',
+        port: 5025,
+        ignoreTLS: true,
+      };
+    } else {
+      options = {
+        host,
+        port,
+        secure: false,
+        requireTLS: true,
+        auth: {
+          user,
+          pass,
+        },
+        tls: {
+          ciphers: 'SSLv3',
+        },
+      };
+    }
 
     this.transporter = nodemailer.createTransport(options);
 
