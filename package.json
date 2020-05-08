@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "seed:dev": "LOCAL_ENV=true ts-node ./src/config/db/seed-database.ts",
+    "seed:dev": "LOCAL_ENV=true ts-node ./src/database/seed-database.ts",
     "dev": "docker-compose up -d && LOCAL_ENV=true tsnd ./src/server.ts",
+    "dev:new": "docker-compose up -d && LOCAL_ENV=true tsnd ./src/app.ts",
     "build": "tsc",
     "start": "npm run build && node .build/server.js",
     "geocodingServiceTest": "node .build/src/app/geocoding/GeocodingService.js",

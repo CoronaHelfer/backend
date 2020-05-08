@@ -1,32 +1,22 @@
-import Express from 'express';
-import connectDatabase from './config/db/connection';
-import Environment from './config/environments';
-import ExpressMiddleware from './config/express-middleware';
+import express, { json } from 'express';
+import cors from 'cors';
 
-class Server {
+import logger from './utils/logger';
+import router from './router';
 
-  public static bootstrap(): Server {
-    return new Server();
-  }
+import connectDatabase from './database/connect-database';
+import Environment from './environments';
 
-  public app: Express.Application;
-  protected config: any;
-  private db;
+connectDatabase();
 
-  constructor() {
-    this.app = Express();
-    this.db = connectDatabase();
+const server = express();
 
-    this.config = Environment;
-    ExpressMiddleware.init(this.app, this.config);
-    this.main();
-  }
+server
+.use(cors())
+.use(json())
+.use(logger())
+.use('/api/v1', router);
 
-  public main() {
-    const port = this.config.PORT;
-    this.app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-  }
-}
-
-const server = Server.bootstrap();
-export = server.app;
+server.listen(Environment.PORT || 3000, () => {
+  console.info(`Server running in ${process.env.NODE_ENV} mode on port ${Environment.PORT}`);
+});

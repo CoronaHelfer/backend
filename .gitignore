@@ -4,9 +4,6 @@
 /public/logs/access.log
 .vscode
 *.pdf
-data/db
-data/certbot/conf/*
-data/certbot/www/*
 *.gz
 *.log
 *.logs
