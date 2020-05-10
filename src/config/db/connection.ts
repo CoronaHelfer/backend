@@ -54,6 +54,7 @@ if (process.env.LOCAL_ENV) {
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false,
+    readPreference: 'primaryPreferred',
   };
 }
 
