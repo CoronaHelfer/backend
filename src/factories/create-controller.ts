@@ -50,7 +50,7 @@ export default function createController({ Model }) {
     return Response.ok(entity);
   }));
 
-  const patch = sendResponse(handleError(async (req, res) => {
+  const put = sendResponse(handleError(async (req, res) => {
     if (isNil(req.params.id)) {
       return Response.badRequest({ message: 'No ObjectId provided' });
     }
@@ -82,7 +82,7 @@ export default function createController({ Model }) {
 
     const entity = await Model.findById(req.params.id);
 
-    if (entity === null) {
+    if (!entity) {
       return Response.notFound();
     }
 
@@ -95,7 +95,7 @@ export default function createController({ Model }) {
     create,
     list,
     read,
-    patch,
+    put,
     remove,
   };
 }

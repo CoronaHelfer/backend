@@ -1,5 +1,5 @@
 import * as nodemailer from 'nodemailer';
-import { MailService } from '../resources/nodemailer/mailService';
+import { MailService } from '../resources_deprecated/nodemailer/mailService';
 
 class Config {
   protected JWT_SECRET: string;

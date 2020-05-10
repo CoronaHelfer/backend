@@ -1,7 +1,7 @@
 import UserService from '../auth/UserService';
 import CategoryService from '../category/CategoryService';
 import GeocodingService from '../geocoding/GeocodingService';
-import Request from './RequestModel';
+import Request from '../../resources/request/request-model';
 
 class RequestService {
   public request: any;

@@ -18,10 +18,6 @@ export default function createRouter({ Controller }) {
     return RouterFactory.defineRoute('get', '/:id', Controller.read, guards);
   }
 
-  function withPatchRoute(guards) {
-    return RouterFactory.defineRoute('patch', '/', Controller.patch, guards);
-  }
-
   function withPutRoute(guards) {
     return RouterFactory.defineRoute('put', '/', Controller.put, guards);
   }
@@ -42,7 +38,6 @@ export default function createRouter({ Controller }) {
     withCreateRoute,
     withListRoute,
     withReadRoute,
-    withPatchRoute,
     withPutRoute,
     withDeleteRoute,
 

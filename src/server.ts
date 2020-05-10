@@ -2,6 +2,7 @@ import express, { json } from 'express';
 import cors from 'cors';
 
 import logger from './utils/logger';
+import deprecatedRouter from './router_deprecated';
 import router from './router';
 
 import connectDatabase from './database/connect-database';
@@ -15,7 +16,8 @@ server
 .use(cors())
 .use(json())
 .use(logger())
-.use('/api/v1', router);
+.use('/api/v1', deprecatedRouter)
+.use('/api/v2', router);
 
 server.listen(Environment.PORT || 3000, () => {
   console.info(`Server running in ${process.env.NODE_ENV} mode on port ${Environment.PORT}`);
