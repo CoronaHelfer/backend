@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import Environment from '../../environments';
 import {MailService} from '../nodemailer/mailService';
-import VerificationKey from '../verification/VerificationKeyModel';
-import User from './UserModel';
+import VerificationKey from '../../resources/verification-key/verification-key-model';
+import User from '../../resources/user/user-model';
 
 const config = Environment;
 

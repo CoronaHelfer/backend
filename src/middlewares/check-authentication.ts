@@ -1,6 +1,6 @@
 import { promisify } from 'util';
 import jwt from 'jsonwebtoken';
-import User from '../resources_deprecated/auth/UserModel';
+import User from '../resources/user/user-model';
 import Environment from '../environments';
 
 const promisifiedVerify = promisify(jwt.verify);

@@ -1,5 +1,5 @@
-import User from '../auth/UserModel';
-import Request from '../../resources/request/request-model';
+import User from '../../resources/user/user-model';
+import Request from '../../resources/help-request/help-request-model';
 import NotificationService from '../notification/NotificationService';
 
 class HelperService {

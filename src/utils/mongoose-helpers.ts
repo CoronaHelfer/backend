@@ -16,8 +16,8 @@ export const createProjection = query => {
 
 export const createListOptions = query => {
   const sort = query.sort ? query.sort.split(',').join(' ') : '-createdAt';
-  const page = query.page ? parseInt(query.page, 10) : 1;
-  const limit = query.limit ? parseInt(query.limit, 10) : 25;
+  const page = query.page ? Number(query.page) : 1;
+  const limit = query.limit ? Number(query.limit) : 25;
   const skip = (page - 1) * limit;
 
   return { sort, skip, limit };

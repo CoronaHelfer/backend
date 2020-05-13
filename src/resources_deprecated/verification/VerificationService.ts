@@ -1,7 +1,7 @@
 import Environment from '../../environments';
-import User from '../auth/UserModel';
+import User from '../../resources/user/user-model';
 import { MailService } from '../nodemailer/mailService';
-import VerificationKey from './VerificationKeyModel';
+import VerificationKey from '../../resources/verification-key/verification-key-model';
 
 class VerificationService {
   public async verifyMail(key: number, userId: string) {

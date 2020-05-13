@@ -1,8 +1,10 @@
 import express from 'express';
-import requestRouter from './resources/request/request-router';
+import userRouter from './resources/user/user-router';
+import helpRequestRouter from './resources/help-request/help-request-router';
 
 const router = express.Router();
 
-router.use('/request', requestRouter);
+router.use('/users', userRouter);
+router.use('/requests', helpRequestRouter);
 
 export default router;
