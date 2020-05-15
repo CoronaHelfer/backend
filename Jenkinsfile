@@ -41,23 +41,12 @@ pipeline {
             }
         }
 
-        stage('Deploy to preprod') {
+        stage('Deploy to production') {
             when {
-                tag pattern: '^preprod-*', comparator: "REGEXP"
+                buildingTag()
             }
             steps {
-                //sh 'bundle exec cap preprod deploy'
-
-                milestone(4)
-            }
-        }
-
-        stage('Deploy to prod') {
-            when {
-                tag pattern: '^release-*', comparator: "REGEXP"
-            }
-            steps {
-                //sh 'bundle exec cap prod deploy'
+                sh 'bundle exec cap production deploy'
 
                 milestone(5)
             }
