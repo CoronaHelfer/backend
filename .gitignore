@@ -11,3 +11,4 @@ data/certbot/www/*
 *.log
 *.logs
 .editorconfig
+.arcconfig
