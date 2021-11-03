@@ -36,7 +36,7 @@
     "pdfkit": "^0.11.0",
     "ramda": "^0.27.0",
     "swagger-ui-express": "^4.0.5",
-    "validator": "^11.0.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
