@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@googlemaps/google-maps-services-js": "^2.3.1",
+    "@googlemaps/google-maps-services-js": "^3.3.27",
     "@types/node": "^12.12.37",
     "@types/nodemailer": "^6.4.0",
     "@types/nodemailer-direct-transport": "^1.0.31",
